@@ -1,29 +1,19 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, Grid } from '@mui/material';
 
 export default function App() {
-  // ユーザー名の状態を管理するためのuseStateフック
   const [username, setUsername] = useState<string>('');
   const navigate = useNavigate();
 
-  // ボタンがクリックされたときの処理
   const handleLogin = () => {
     if (username) {
-      navigate(`/?${username}`);
+      navigate(`/?name={username}`);
     }
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      minHeight="100vh"
-      width="100%"  // 親要素の幅を全体に設定
-    >
       <Box
         display="flex"
         flexDirection="column"
@@ -38,7 +28,7 @@ export default function App() {
         bgcolor="background.paper" // 背景色を設定
       >
         <Typography variant="h4" gutterBottom>
-          ログイン画面
+          サインアップ or ログイン
         </Typography>
         <TextField
           label="ユーザー名"
@@ -51,6 +41,5 @@ export default function App() {
           Login
         </Button>
       </Box>
-    </Box>
   );
 }
