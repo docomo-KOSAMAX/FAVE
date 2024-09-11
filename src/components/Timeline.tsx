@@ -1,24 +1,234 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import { useNavigate, useLocation } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Button, Box, Typography } from "@mui/material";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 
 export default function App() {
+  const [posts, setPosts] = useState<any[]>([]); // 投稿を管理するためのステート
+  const [faves, setFaves] = useState<any[]>([]); // 推し情報を管理するためのステート
+  const [reloadCount, setReloadCount] = useState(0);
+  const [mergedPosts, setMergedPosts] = useState<any[]>([]); // マージしたデータを保持するためのステート
+  const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
   const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  // ボタンがクリックされたときに呼び出される関数
-  const handleLogin = () => {
-    // 現在のパラメータを取得して'/Post'に渡す
-    navigate(`/Post${location.search}`);
+  // URLからユーザー名を取得
+  const userName = searchParams.get("name");
+
+  // 投稿ボタンをクリックしたときに呼び出される関数
+  const handleNavigateToPost = () => {
+    navigate(`/post/?name=${userName}`);
   };
+
+  // タイムラインボタンをクリックしたときに呼び出される関数
+  const handleNavigateToTimeline = () => {
+    navigate(`/user/?name=${userName}`);
+  };
+  const handleUpdatePage = () => {
+    // window.location.reload();
+    setReloadCount(reloadCount + 1);
+  };
+
+  // リアクションボタンのクリックハンドラ
+  const updateReaction = (
+    id: string,
+    type: "like" | "watch" | "love" | "new_listener"
+  ) => {
+    // APIにリクエストを送信
+    fetch(`/api/favePosts/${userName}/${id}/reactions/${type}`, {
+      method: "POST",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("リアクションの更新に失敗しました");
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        console.error("Error updating reactions:", error);
+      });
+    // リアクションの数を更新
+    setMergedPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === id
+          ? {
+              ...post,
+              reactions: {
+                ...post.reactions,
+                [type]: post.reactions[type] + 1, // 指定したリアクションの数値を加算
+              },
+            }
+          : post
+      )
+    );
+  };
+
+  // 各リアクションのハンドラ
+  const handleLike = (id: string) => updateReaction(id, "like");
+  const handleWatch = (id: string) => updateReaction(id, "watch");
+  const handleLove = (id: string) => updateReaction(id, "love");
+  const handleNewListener = (id: string) => updateReaction(id, "new_listener");
+
+  // APIから投稿と推し情報を取得
+  useEffect(() => {
+    if (userName) {
+      // APIから投稿データを取得
+      fetch(`/api/favePosts/timeline/${userName}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("投稿データの取得に失敗しました");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setPosts(data);
+          setError(null);
+        })
+        .catch((error) => {
+          console.error("Error fetching posts:", error);
+          // 取得に失敗した場合はダミーデータを使用
+          const dummyData = [
+            {
+              id: "1",
+              message: "これはダミーデータの投稿です。",
+              fave_id: "fave1",
+              date_time: "2024-09-11 10:00",
+              post_by: userName,
+              reactions: {
+                like: 5,
+                watch: 10,
+                love: 3,
+                new_listener: 1,
+              },
+            },
+            {
+              id: "2",
+              message: "こちらもダミーデータの投稿です。",
+              fave_id: "fave2",
+              date_time: "2024-09-12 12:00",
+              post_by: userName,
+              reactions: {
+                like: 8,
+                watch: 15,
+                love: 6,
+                new_listener: 2,
+              },
+            },
+          ];
+          setPosts(dummyData);
+          setError(
+            "投稿データの取得に失敗しました。ダミーデータを表示しています。"
+          );
+        });
+
+      // APIから推し情報を取得
+      fetch("/api/fave")
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("推し情報の取得に失敗しました");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setFaves(data);
+          setError(null);
+        })
+        .catch((error) => {
+          console.error("Error fetching faves:", error);
+          // 取得に失敗した場合はダミーデータを使用
+          const faveData = [
+            {
+              fave_id: "fave1",
+              fave_name: "赤身かるび",
+            },
+            {
+              fave_id: "fave2",
+              fave_name: "琵琶湖くん",
+            },
+          ];
+          setFaves(faveData);
+          setError(
+            "推し情報の取得に失敗しました。ダミーデータを使用しています。"
+          );
+        });
+    } else {
+      setError("ユーザー名が指定されていません。");
+    }
+  }, [userName, reloadCount]);
+
+  // 投稿と推し情報をマージしてfave_nameを追加
+  useEffect(() => {
+    if (posts.length > 0 && faves.length > 0) {
+      // postsとfavesのデータをマージ
+      const merged = posts.map((post) => {
+        // 対応するfave_nameを見つける
+        const matchedFave = faves.find((fave) => fave.fave_id === post.fave_id);
+        return {
+          ...post,
+          fave_name: matchedFave ? matchedFave.fave_name : "不明な推し", // 見つからなければデフォルト値を使用
+        };
+      });
+
+      setMergedPosts(merged); // マージされた結果をステートに設定
+    }
+  }, [posts, faves, reloadCount]);
 
   return (
     <div>
       <h1>タイムライン</h1>
-      <Button variant="contained">Hello World</Button>
-      <Button variant="contained" onClick={handleLogin}>
-        投稿する
-      </Button>
+
+      {/* 投稿を表示するセクション */}
+      <Box mt={4}>
+        {error && (
+          <Typography color="error" variant="h6">
+            {error}
+          </Typography>
+        )}
+        {mergedPosts.map((post) => (
+          <TimelineElement
+            key={post.id}
+            post={post}
+            onLike={handleLike}
+            onWatch={handleWatch}
+            onLove={handleLove}
+            onNewListener={handleNewListener}
+          />
+        ))}
+      </Box>
+
+      {/* 画面右下に固定されたボタン */}
+      <Box
+        style={{
+          position: "fixed",
+          bottom: 16,
+          right: 16,
+          display: "flex",
+          flexDirection: "row",
+          gap: "8px",
+        }}
+      >
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleNavigateToPost}
+        >
+          投稿する
+        </Button>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={handleNavigateToTimeline}
+        >
+          ユーザーページへ
+        </Button>
+        <Button
+          variant="contained"
+          // color=""
+          onClick={handleUpdatePage}
+        >
+          更新する
+        </Button>
+      </Box>
     </div>
   );
 }
