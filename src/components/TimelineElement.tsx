@@ -47,10 +47,13 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
     <Box mb={3} p={2} border={1} borderRadius={2} boxShadow={2}>
       {/* タイトルと投稿日を同じ行に配置 */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6">Vtuber名: {post.fave_name}</Typography>
-        <Typography variant="body2" style={{ textAlign: 'right' }}>
-          投稿日: {post.date_time}
+        <Typography variant="h6">
+          <span style={{ fontSize: '0.75em' }}>Vtuber名:</span> {post.fave_name}
         </Typography>
+        <Box textAlign="right">
+          {/* 投稿者と投稿日を表示 */}
+          <Typography variant="body2">{post.date_time}</Typography>
+        </Box>
       </Box>
       <Typography>{post.message}</Typography>
       <Box mt={1}>

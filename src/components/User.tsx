@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Button, Box, Typography } from '@mui/material';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import TimelineElement from './TimelineElement'; // コンポーネントのインポート
+import { FavePost, Fave } from '../types/index'; // 型のインポート
 
-export default function App() {
-  const [posts, setPosts] = useState<any[]>([]); // 投稿を管理するためのステート
-  const [faves, setFaves] = useState<any[]>([]); // 推し情報を管理するためのステート
-  const [mergedPosts, setMergedPosts] = useState<any[]>([]); // マージしたデータを保持するためのステート
+export default function User() {
+  const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
+  const [faves, setFaves] = useState<Fave[]>([]); // 推し情報を管理するためのステート
+  const [mergedPosts, setMergedPosts] = useState<(FavePost & { fave_name: string })[]>([]); // マージしたデータを保持するためのステート
   const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -28,7 +30,7 @@ export default function App() {
   const updateReaction = (id: string, type: 'like' | 'watch' | 'love' | 'new_listener') => {
     // APIにリクエストを送信
     fetch(`/api/favePosts/${userName}/${id}/reactions/${type}`, {
-      method: 'POST'
+      method: 'POST',
     })
       .then((response) => {
         if (!response.ok) {
@@ -39,24 +41,23 @@ export default function App() {
       .catch((error) => {
         console.error('Error updating reactions:', error);
       });
-        // リアクションの数を更新
-        setMergedPosts((prevPosts) =>
-          prevPosts.map((post) =>
-            post.id === id
-              ? {
-                ...post,
-                reactions: {
-                  ...post.reactions,
-                  [type]: post.reactions[type] + 1, // 指定したリアクションの数値を加算
-                },
-              }
-              : post
-          )
-        );
-      
-      
+
+    // リアクションの数を更新
+    setMergedPosts((prevPosts) =>
+      prevPosts.map((post) =>
+        post.id === id
+          ? {
+            ...post,
+            reactions: {
+              ...post.reactions,
+              [type]: post.reactions[type as keyof FavePost['reactions']] + 1, // 指定したリアクションの数値を加算
+            },
+          }
+          : post
+      )
+    );
   };
-  
+
   // 各リアクションのハンドラ
   const handleLike = (id: string) => updateReaction(id, 'like');
   const handleWatch = (id: string) => updateReaction(id, 'watch');
@@ -74,20 +75,20 @@ export default function App() {
           }
           return response.json();
         })
-        .then((data) => {
+        .then((data: FavePost[]) => {
           setPosts(data);
           setError(null);
         })
         .catch((error) => {
           console.error('Error fetching posts:', error);
           // 取得に失敗した場合はダミーデータを使用
-          const dummyData = [
+          const dummyData: FavePost[] = [
             {
               id: '1',
-              message: 'これはダミーデータの投稿です。',
+              message: '推しの歌声が毎日の活力！この曲を聴くと元気が出ます！',
               fave_id: 'fave1',
               date_time: '2024-09-11 10:00',
-              post_by: userName,
+              post_by: userName || '',
               reactions: {
                 like: 5,
                 watch: 10,
@@ -97,10 +98,10 @@ export default function App() {
             },
             {
               id: '2',
-              message: 'こちらもダミーデータの投稿です。',
+              message: '推しのゲーム実況、本当に面白い！もっとたくさん見たい！',
               fave_id: 'fave2',
               date_time: '2024-09-12 12:00',
-              post_by: userName,
+              post_by: userName || '',
               reactions: {
                 like: 8,
                 watch: 15,
@@ -108,6 +109,7 @@ export default function App() {
                 new_listener: 2,
               },
             },
+            // 他のダミーデータも追加
           ];
           setPosts(dummyData);
           setError('投稿データの取得に失敗しました。ダミーデータを表示しています。');
@@ -121,14 +123,14 @@ export default function App() {
           }
           return response.json();
         })
-        .then((data) => {
+        .then((data: Fave[]) => {
           setFaves(data);
           setError(null);
         })
         .catch((error) => {
           console.error('Error fetching faves:', error);
           // 取得に失敗した場合はダミーデータを使用
-          const faveData = [
+          const faveData: Fave[] = [
             {
               fave_id: 'fave1',
               fave_name: '赤身かるび',
@@ -165,7 +167,7 @@ export default function App() {
 
   return (
     <div>
-      <h1>ユーザー画面</h1>
+      <h1>{userName}の投稿</h1>
 
       {/* 投稿を表示するセクション */}
       <Box mt={4}>

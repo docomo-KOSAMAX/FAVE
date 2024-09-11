@@ -1,45 +1,73 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextField, Button, Typography, Grid } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 
 export default function App() {
   const [username, setUsername] = useState<string>('');
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleLogin = () => {
     if (username) {
+      // APIを叩いてユーザー名の検証を行う
+      fetch(`/api/users/${username}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('ユーザー名が無効です。');
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          console.error('Error logging in:', error);
+          setError('ログインに失敗しました。ユーザー名を確認してください。');
+        });
+
+      // 遷移
       navigate(`/?name=${username}`);
+
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleLogin();
     }
   };
 
   return (
-      <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        p={4} // パディングを追加
-        border={1} // ボーダーを追加してボックスの視覚的な枠線を設定
-        borderRadius={2} // 角を丸くする
-        boxShadow={3} // シャドウを追加
-        maxWidth="400px" // ボックスの最大幅を設定
-        width="100%" // ボックスの幅を100%に設定
-        bgcolor="background.paper" // 背景色を設定
-      >
-        <Typography variant="h4" gutterBottom>
-          Vファンダムへの入り口
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      p={4}
+      border={1}
+      borderRadius={2}
+      boxShadow={3}
+      maxWidth="400px"
+      width="100%"
+      bgcolor="background.paper"
+    >
+      <Typography variant="h4" gutterBottom>
+        チームBの入り口
+      </Typography>
+      <TextField
+        label="ユーザー名"
+        variant="outlined"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={handleKeyDown} // Enterキーのイベントハンドラを追加
+        sx={{ marginBottom: 2, width: '100%' }}
+      />
+      {error && (
+        <Typography color="error" variant="body2" sx={{ marginBottom: 2 }}>
+          {error}
         </Typography>
-        <TextField
-          label="ユーザー名"
-          variant="outlined"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          sx={{ marginBottom: 2, width: '100%' }} // テキストフィールドの幅をボックスに合わせる
-        />
-        <Button variant="contained" onClick={handleLogin} fullWidth>
-          ログイン または サインアップ
-        </Button>
-      </Box>
+      )}
+      <Button variant="contained" onClick={handleLogin} fullWidth>
+        ログイン または サインアップ
+      </Button>
+    </Box>
   );
 }
