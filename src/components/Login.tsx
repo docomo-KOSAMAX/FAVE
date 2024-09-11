@@ -9,7 +9,7 @@ export default function App() {
 
   const handleLogin = () => {
     if (username) {
-      navigate(`/?name={username}`);
+      navigate(`/?name=${username}`);
     }
   };
 
@@ -28,7 +28,7 @@ export default function App() {
         bgcolor="background.paper" // 背景色を設定
       >
         <Typography variant="h4" gutterBottom>
-          サインアップ or ログイン
+          Vファンダムへの入り口
         </Typography>
         <TextField
           label="ユーザー名"
@@ -38,7 +38,7 @@ export default function App() {
           sx={{ marginBottom: 2, width: '100%' }} // テキストフィールドの幅をボックスに合わせる
         />
         <Button variant="contained" onClick={handleLogin} fullWidth>
-          Login
+          ログイン または サインアップ
         </Button>
       </Box>
   );
