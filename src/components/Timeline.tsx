@@ -1,10 +1,17 @@
 import { useState, useEffect } from "react";
-import { Button, Box, Typography, Dialog, DialogContent, CircularProgress } from "@mui/material";
+import {
+  Button,
+  Box,
+  Typography,
+  Dialog,
+  DialogContent,
+  CircularProgress,
+} from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 import { FavePost, Fave } from "../types/index"; // 型のインポート
 import { Header } from "./Header";
-import Post from './Post'; // Postコンポーネントをインポート
+import Post from "./Post"; // Postコンポーネントをインポート
 
 export default function App() {
   const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
@@ -17,7 +24,7 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(true); // ローディング状態を管理するステート
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  
+
   const [open, setOpen] = useState<boolean>(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -48,9 +55,12 @@ export default function App() {
     type: "like" | "watch" | "love" | "new_listener"
   ) => {
     // APIにリクエストを送信
-    fetch(`/api/favePosts/${userName}/${id}/reactions/${type}`, {
-      method: "POST",
-    })
+    fetch(
+      `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}/${id}/reactions/${type}`,
+      {
+        method: "POST",
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error("リアクションの更新に失敗しました");
@@ -196,27 +206,10 @@ export default function App() {
 
   return (
     <div>
-      {/* <h1>タイムライン</h1> */}
       <Header></Header>
 
       {/* 投稿を表示するセクション */}
-      {/* <Box mt={4}>
-        {error && (
-          <Typography color="error" variant="h6">
-            {error}
-          </Typography>
-        )}
-        {mergedPosts.map((post) => (
-          <TimelineElement
-            key={post.id}
-            post={post}
-            onLike={handleLike}
-            onWatch={handleWatch}
-            onLove={handleLove}
-            onNewListener={handleNewListener}
-          />
-        ))}
-      </Box> */}
+
       <Box mt={2}>
         {loading ? ( // ローディング中の表示
           <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
@@ -236,6 +229,10 @@ export default function App() {
               <TimelineElement
                 key={post.id}
                 post={post}
+                onLike={handleLike}
+                onWatch={handleWatch}
+                onLove={handleLove}
+                onNewListener={handleNewListener}
                 // onDelete={handleDelete} // 削除ハンドラを追加
               />
             ))}
@@ -254,17 +251,13 @@ export default function App() {
           gap: "8px",
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
+        <Button variant="contained" color="primary" onClick={handleOpen}>
           投稿する
         </Button>
         <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
-        <DialogContent>
-          <Post onClose={handleClose} />
-        </DialogContent>
+          <DialogContent>
+            <Post onClose={handleClose} />
+          </DialogContent>
         </Dialog>
         <Button
           variant="contained"
