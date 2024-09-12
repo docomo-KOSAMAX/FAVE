@@ -12,7 +12,6 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 }));
 
 
-
 const App: React.FC = () => {
   const navigate = useNavigate();
   const [newPost, setnewPost] = useState<string>(""); //投稿ボックスに入力された文字列を保持
@@ -129,7 +128,7 @@ const api = axios.create({
 
 
   return (
-      <Box sx={{ padding: 10, maxWidth: '1000px', margin: '0 auto', boxShadow: 20,  backgroundColor: '#ffffff', borderRadius: '30px' }}>
+      <Box sx={{ padding: 10, maxWidth: '1000px', margin: '0 auto', boxShadow: 20,  backgroundColor: 'rgba(255, 255, 255, 0.9)', borderRadius: '30px' }}>
         {/* 投稿フォームの上部にプロフィール画像を表示 */}
         <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
           {/* ボックス上に文字を表示 */}
