@@ -103,20 +103,15 @@ export default function Login() {
         />
 
         <Typography
-          variant="body1"
+          variant="h6" // h6相当のスタイルに設定
           gutterBottom
           sx={{
-            fontWeight: 'bold',
             textAlign: 'center',
-            display: 'inline', // 親要素はインライン表示
+            marginLeft: '8px', // 文字を少し右にずらす
           }}
         >
-          Vtuberファンダムを
-          <span style={{ display: 'inline', whiteSpace: 'nowrap' }}>活性化させるプラットフォーム</span>
+          推しを推し合う。
         </Typography>
-
-
-
 
         <TextField
           label="ユーザー名"
