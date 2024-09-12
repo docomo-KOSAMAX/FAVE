@@ -29,7 +29,7 @@ export default function User() {
   // リアクションボタンのクリックハンドラ
   const updateReaction = (id: number, type: 'like' | 'watch' | 'love' | 'new_listener') => {
     // APIにリクエストを送信
-    fetch(`/api/favePosts/${userName}/${id}/reactions/${type}`, {
+    fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}/${id}/reactions/${type}`, {
       method: 'POST',
     })
       .then((response) => {
