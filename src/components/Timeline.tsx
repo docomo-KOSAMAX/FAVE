@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { Button, Box, Typography } from "@mui/material";
+import { Button, Box, Typography, Dialog, DialogContent } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 import { FavePost, Fave } from "../types/index"; // 型のインポート
 import { Header } from "./Header";
+import Post from './Post'; // Postコンポーネントをインポート
 
 export default function App() {
   const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
@@ -15,6 +16,10 @@ export default function App() {
   const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  
+  const [open, setOpen] = useState<boolean>(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // URLからユーザー名を取得
   const userName = searchParams.get("name");
@@ -82,7 +87,7 @@ export default function App() {
       // APIから投稿データを取得
       // fetch(`/api/favePosts/timeline/${userName}`)
       fetch(
-        `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/huga`
+        `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/${userName}`
       )
         .then((response) => {
           if (!response.ok) {
@@ -224,10 +229,15 @@ export default function App() {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleNavigateToPost}
+          onClick={handleOpen}
         >
           投稿する
         </Button>
+        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <DialogContent>
+          <Post onClose={handleClose} />
+        </DialogContent>
+        </Dialog>
         <Button
           variant="contained"
           color="secondary"

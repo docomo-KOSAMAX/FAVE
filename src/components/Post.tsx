@@ -11,9 +11,11 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
+interface PostProps {
+  onClose: () => void; // onClose 関数をプロップスとして受け取る
+}
 
-
-const App: React.FC = () => {
+const App: React.FC<PostProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const [newPost, setnewPost] = useState<string>(""); //投稿ボックスに入力された文字列を保持
   const [searchParams] = useSearchParams();
@@ -91,7 +93,7 @@ const api = axios.create({
         if (response.status === 200) {
           // ステータスコードが200ならタイムラインに遷移
           alert('投稿しました。');
-          handleNavigateToTimeline();
+          onClose();
         } else if (response.status === 202) {
           // ステータスコードが202ならエラーメッセージを表示
           setErrorMessage("ユーザ名が登録されていません。");
@@ -152,7 +154,7 @@ const api = axios.create({
           sx={{
           position: 'absolute', // リストを絶対位置にする
           zIndex: 1, // 値を大きくして前面に表示
-          width: '20%', // 検索ボックスに合わせてリストの幅を調整
+          width: '40%', // 検索ボックスに合わせてリストの幅を調整
           backgroundColor: '#f5f5f5',
           border: '1px solid #ccc',
           borderRadius: '4px',
@@ -182,7 +184,7 @@ const api = axios.create({
           variant="outlined"
           placeholder="推しコメントを入力"
           value={newPost}
-          sx={{ width: '500px' }}
+          sx={{ width: '400px' }}
           onChange={(e) => setnewPost(e.target.value)}
         />
 
@@ -199,7 +201,7 @@ const api = axios.create({
 
         <Box display="flex" justifyContent="space-between">
           {/* 戻るボタン */}
-          <Button variant="outlined"  onClick={handleNavigateToTimeline}>
+          <Button variant="outlined"  onClick={onClose}>
             戻る
           </Button>
 
