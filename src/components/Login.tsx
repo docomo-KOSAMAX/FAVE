@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, useTheme, useMediaQuery } from '@mui/material'; // useMediaQueryをインポート
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles({
@@ -16,11 +16,15 @@ const useStyles = makeStyles({
   },
 });
 
-export default function App() {
+export default function Login() { // コンポーネント名を変更
   const classes = useStyles();
+  const theme = useTheme();
   const [username, setUsername] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  // ダークモードかどうかをチェック
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const handleLogin = () => {
     if (username) {
@@ -52,6 +56,10 @@ export default function App() {
     }
   };
 
+  // ライトモードとダークモードで異なる画像のURLを設定
+  const lightModeImageUrl = 'https://media.discordapp.net/attachments/968784586542829629/1283740202304798721/Firefly_logo_web_app_anime_vtuber_96844.jpg?ex=66e417ba&is=66e2c63a&hm=84c3e92b442163058740fb63603d38d27b824479a63e7f736303451f99aa285a&=&format=webp&width=675&height=689';
+  const darkModeImageUrl = 'https://media.discordapp.net/attachments/968784586542829629/1283389160509407325/image.png?ex=66e3798c&is=66e2280c&hm=f216c00acf9c02f0e8bda5bca26d9090448678448a61b0ba87c3752796159906&=&format=webp&quality=lossless&width=365&height=369';
+
   return (
     <Box
       display="flex"
@@ -62,11 +70,11 @@ export default function App() {
       borderRadius={2}
       maxWidth="600px"
       width="100%"
-      bgcolor="rgba(255, 255, 255, 0.7)" // 半透明の白い背景
+      bgcolor="rgba(255, 255, 255, 0.7)"
       position="relative"
       sx={{
-        backdropFilter: 'blur(10px)', // 背景のぼかし効果
-        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)', // 全方向に影を追加
+        backdropFilter: 'blur(10px)',
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
       }}
     >
       <Typography
@@ -76,19 +84,20 @@ export default function App() {
           fontFamily: "'Montserrat', sans-serif",
           letterSpacing: '2px',
           fontWeight: 'bold',
-          textTransform: 'uppercase'
+          textTransform: 'uppercase',
         }}
       >
         FAVE
       </Typography>
       <img
-        src="https://media.discordapp.net/attachments/968784586542829629/1283740202304798721/Firefly_logo_web_app_anime_vtuber_96844.jpg?ex=66e417ba&is=66e2c63a&hm=84c3e92b442163058740fb63603d38d27b824479a63e7f736303451f99aa285a&=&format=webp&width=675&height=689"
+        src={prefersDarkMode ? darkModeImageUrl : lightModeImageUrl} // prefersDarkModeに基づいて画像を切り替える
         alt="FAVE"
         width={200}
         height={200}
-        style={{ borderRadius: '50%', marginBottom: '16px' }} // 画像を丸くするスタイル
+        style={{ borderRadius: '50%', marginBottom: '16px' }}
       />
-      <Typography variant="h6" gutterBottom>
+
+      <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
         ファンダムを活性化させるプラットフォーム
       </Typography>
 
@@ -97,7 +106,7 @@ export default function App() {
         variant="outlined"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        onKeyDown={handleKeyDown} // Enterキーのイベントハンドラを追加
+        onKeyDown={handleKeyDown}
         sx={{ marginBottom: 2, width: '100%' }}
       />
       {error && (
@@ -109,14 +118,13 @@ export default function App() {
         ログイン または サインアップ
       </Button>
 
-      {/* 下部の表記を追加 */}
-      <Typography
-        variant="body2"
-        color="textSecondary"
-        align="center"
-        sx={{ mt: 4 }}
-      >
-        Made by KOSAMAX Powered by React and Material-UI
+      {/* クレジットを一貫したスタイルで表示 */}
+      <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 4 }}>
+        Made by KOSAMAX | Powered by React and Material-UI
+      </Typography>
+
+      <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 1 }}>
+        Background Image: UTAIRO BOX | Icon Image: Adobe Firefly
       </Typography>
     </Box>
   );

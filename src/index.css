@@ -83,3 +83,28 @@ button:focus-visible {
     font-family: 'Noto Sans JP', sans-serif;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #213547;
+    /* background: linear-gradient(to right, #ffcdcd, #fffec4); */
+  }
+
+  a:hover {
+    color: #747bff;
+  }
+
+  button {
+    background-color: #f9f9f9;
+  }
+
+  html {
+    background-image: url('https://sakuranouta.biz/wp-content/uploads/2024/03/%E9%97%87%E3%83%9D%E3%83%83%E3%83%97%E8%B5%A4_%EF%BC%92_%E3%82%A2%E3%83%BC%E3%83%88%E3%83%9C%E3%83%BC%E3%83%89-1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* 背景を固定する */
+    background-attachment: fixed;
+    font-family: 'Noto Sans JP', sans-serif;
+  }
+}
