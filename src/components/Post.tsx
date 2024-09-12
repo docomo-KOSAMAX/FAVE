@@ -153,7 +153,7 @@ const api = axios.create({
           position: 'absolute', // リストを絶対位置にする
           zIndex: 1, // 値を大きくして前面に表示
           width: '20%', // 検索ボックスに合わせてリストの幅を調整
-          backgroundColor: '#eeffFF',
+          backgroundColor: '#f5f5f5',
           border: '1px solid #ccc',
           borderRadius: '4px',
           padding: 0, 
