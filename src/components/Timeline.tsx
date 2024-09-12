@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Box, Typography, Dialog, DialogContent } from "@mui/material";
+import { Button, Box, Typography, Dialog, DialogContent, CircularProgress } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 import { FavePost, Fave } from "../types/index"; // 型のインポート
@@ -14,6 +14,7 @@ export default function App() {
     (FavePost & { fave_name: string })[]
   >([]); // マージしたデータを保持するためのステート
   const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
+  const [loading, setLoading] = useState<boolean>(true); // ローディング状態を管理するステート
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   
@@ -86,6 +87,7 @@ export default function App() {
     if (userName) {
       // APIから投稿データを取得
       // fetch(`/api/favePosts/timeline/${userName}`)
+      setLoading(true); // データ取得前にローディングを開始
       fetch(
         `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/${userName}`
       )
@@ -134,8 +136,8 @@ export default function App() {
           setError(
             "投稿データの取得に失敗しました。ダミーデータを表示しています。"
           );
-        });
-
+        })
+        .finally(() => setLoading(false)); // データ取得後にローディングを終了
       // APIから推し情報を取得
       fetch(
         "https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves"
@@ -170,6 +172,7 @@ export default function App() {
         });
     } else {
       setError("ユーザー名が指定されていません。");
+      setLoading(false); // エラーの場合にもローディングを終了
     }
   }, [userName, reloadCount]);
 
@@ -197,7 +200,7 @@ export default function App() {
       <Header></Header>
 
       {/* 投稿を表示するセクション */}
-      <Box mt={4}>
+      {/* <Box mt={4}>
         {error && (
           <Typography color="error" variant="h6">
             {error}
@@ -213,6 +216,31 @@ export default function App() {
             onNewListener={handleNewListener}
           />
         ))}
+      </Box> */}
+      <Box mt={2}>
+        {loading ? ( // ローディング中の表示
+          <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+            <CircularProgress /> {/* ローディングスピナーを表示 */}
+            <Typography variant="h6" mt={2}>
+              ローディング中...
+            </Typography>
+          </Box>
+        ) : (
+          <>
+            {error && (
+              <Typography color="error" variant="h6">
+                {error}
+              </Typography>
+            )}
+            {mergedPosts.map((post) => (
+              <TimelineElement
+                key={post.id}
+                post={post}
+                // onDelete={handleDelete} // 削除ハンドラを追加
+              />
+            ))}
+          </>
+        )}
       </Box>
 
       {/* 画面右下に固定されたボタン */}
