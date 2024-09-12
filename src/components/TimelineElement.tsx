@@ -1,11 +1,11 @@
-import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import React from "react";
+import { Box, Typography, Button } from "@mui/material";
 
 // タイムライン要素の型定義
 type Post = {
-  id: string;
+  id: number;
   message: string;
-  fave_id: string;
+  fave_id: number;
   date_time: string;
   fave_name: string;
   reactions: {
@@ -20,10 +20,10 @@ type Post = {
 interface TimelineElementProps {
   post: Post;
   error?: string | null;
-  onLike: (id: string) => void;
-  onWatch: (id: string) => void;
-  onLove: (id: string) => void;
-  onNewListener: (id: string) => void;
+  onLike: (id: number) => void;
+  onWatch: (id: number) => void;
+  onLove: (id: number) => void;
+  onNewListener: (id: number) => void;
 }
 
 // タイムライン要素コンポーネント
@@ -47,24 +47,35 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
     <Box mb={3} p={2} border={1} borderRadius={2} boxShadow={2}>
       {/* タイトルと投稿日を同じ行に配置 */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6">Vtuber名: {post.fave_name}</Typography>
-        <Typography variant="body2" style={{ textAlign: 'right' }}>
-          投稿日: {post.date_time}
+        <Typography variant="h6">
+          <span style={{ fontSize: "0.75em" }}>Vtuber名:</span> {post.fave_name}
         </Typography>
+        <Box textAlign="right">
+          {/* 投稿者と投稿日を表示 */}
+          <Typography variant="body2">{post.date_time}</Typography>
+        </Box>
       </Box>
       <Typography>{post.message}</Typography>
       <Box mt={1}>
         {/* リアクションボタン */}
         <Button variant="outlined" size="small" onClick={() => onLike(post.id)}>
           👍 いいね: {post.reactions.like}
-        </Button>{' '}
-        <Button variant="outlined" size="small" onClick={() => onWatch(post.id)}>
+        </Button>{" "}
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => onWatch(post.id)}
+        >
           👀 見たよ: {post.reactions.watch}
-        </Button>{' '}
+        </Button>{" "}
         <Button variant="outlined" size="small" onClick={() => onLove(post.id)}>
           💘 好き: {post.reactions.love}
-        </Button>{' '}
-        <Button variant="outlined" size="small" onClick={() => onNewListener(post.id)}>
+        </Button>{" "}
+        <Button
+          variant="outlined"
+          size="small"
+          onClick={() => onNewListener(post.id)}
+        >
           🆕 リスナーになったよ！: {post.reactions.new_listener}
         </Button>
       </Box>
