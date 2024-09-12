@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { FavePost, Fave } from '../types/index'; // 型のインポート
+import { Fave } from '../types/index'; // 型のインポート
 
 import axios from "axios";
 
