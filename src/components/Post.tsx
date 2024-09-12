@@ -88,10 +88,18 @@ const api = axios.create({
         // 投稿が成功したらタイムラインに遷移
         console.log("Post successful:", response);
         console.log("Status Code:", response.status); // ステータスコードをログに出力
-        handleNavigateToTimeline();
+        if (response.status === 200) {
+          // ステータスコードが200ならタイムラインに遷移
+          alert('投稿しました。');
+          handleNavigateToTimeline();
+        } else if (response.status === 202) {
+          // ステータスコードが202ならエラーメッセージを表示
+          setErrorMessage("ユーザ名が登録されていません。");
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
+        setErrorMessage("投稿に失敗しました。もう一度お試しください。");
       });
   };
 
@@ -121,7 +129,7 @@ const api = axios.create({
 
 
   return (
-      <Box sx={{ padding: 10, maxWidth: '1000px', margin: '0 auto', boxShadow: 3 }}>
+      <Box sx={{ padding: 10, maxWidth: '1000px', margin: '0 auto', boxShadow: 20,  backgroundColor: '#ffffff', borderRadius: '30px' }}>
         {/* 投稿フォームの上部にプロフィール画像を表示 */}
         <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
           {/* ボックス上に文字を表示 */}
@@ -130,6 +138,7 @@ const api = axios.create({
           </Typography>
         </Stack>
 
+        <Box sx={{ mb: 2 }}>
         {/* VTuber検索フォーム */}
         <TextField
           type="text"
@@ -138,12 +147,23 @@ const api = axios.create({
           placeholder="推しのVTuberを検索..."
         />
         {/* 候補を表示 */}
-        <List>
+        {filteredFaves.length > 0 && (
+        <List
+          sx={{
+          position: 'absolute', // リストを絶対位置にする
+          zIndex: 1, // 値を大きくして前面に表示
+          width: '20%', // 検索ボックスに合わせてリストの幅を調整
+          backgroundColor: '#eeffFF',
+          border: '1px solid #ccc',
+          borderRadius: '4px',
+          padding: 0, 
+        }}
+        >
       {filteredFaves.map((fave) => (
         <ListItem 
           key={fave.id} 
           disablePadding
-          sx={{ border: '1px solid #ccc', marginBottom: '0px', borderRadius: '2px' }}  // 枠線と余白の追加
+          sx={{ border: '1px solid #ccc', marginBottom: '0px', borderRadius: '2px' }}
           >
           <ListItemButton onClick={() => handleSelect(fave)}>
             <ListItemText primary={fave.fave_name} />
@@ -151,8 +171,9 @@ const api = axios.create({
         </ListItem>
       ))}
     </List>
+    )}
+    </Box>
         {selectedfaveName && <p>推しのVTuber：{selectedfaveName}</p>}
-
 
         {/* 投稿入力フォーム */}
         <StyledTextField
