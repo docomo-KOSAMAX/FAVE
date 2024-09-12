@@ -18,6 +18,9 @@ export default function App() {
   // URLからユーザー名を取得
   const userName = searchParams.get("name");
 
+  if (!userName) {
+    navigate("/login");
+  }
   // 投稿ボタンをクリックしたときに呼び出される関数
   const handleNavigateToPost = () => {
     navigate(`/post/?name=${userName}`);
