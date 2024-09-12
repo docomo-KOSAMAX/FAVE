@@ -1,6 +1,18 @@
 import React from 'react';
 import { Box, Typography, Button } from '@mui/material';
 
+// 日付フォーマット変換関数
+const formatDateTime = (dateTimeString: string) => {
+  const date = new Date(dateTimeString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月は0ベースなので+1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hours}:${minutes}`;
+};
+
 // タイムライン要素の型定義
 type Post = {
   id: number;
@@ -46,13 +58,13 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
   return (
     <Box mb={3} p={2} border={1} borderRadius={2} boxShadow={2} bgcolor="background.paper">
       {/* タイトルと投稿日を同じ行に配置 */}
-      <Box display="flex" justifyContent="space-between" alignItems="center" >
+      <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h6">
           {post.fave_name} <span style={{ fontSize: '0.75em' }}>推し</span>
         </Typography>
         <Box textAlign="right">
           {/* 投稿者と投稿日を表示 */}
-          <Typography variant="body2">{post.date_time}</Typography>
+          <Typography variant="body2">{formatDateTime(post.date_time)}</Typography>
         </Box>
       </Box>
       <Typography>{post.message}</Typography>
