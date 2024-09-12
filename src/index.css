@@ -24,26 +24,13 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  /* 余白をなくす */
+  margin: auto;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 320px;
-  max-width: 100%;
-  min-height: 100vh;
-  overflow-x: hidden;
-  padding: 0;
-}
-
-#root {
-  width: 100%;
   max-width: 600px;
-  margin: 0 auto;
-  overflow-x: hidden;
-  padding: 0 8px;
-  /* パディングを16pxに変更 */
-  box-sizing: border-box;
+  min-height: 100vh;
 }
 
 h1 {
@@ -75,6 +62,7 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
+    /* background: linear-gradient(to right, #ffcdcd, #fffec4); */
   }
 
   a:hover {
@@ -90,6 +78,7 @@ button:focus-visible {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    /* 背景を固定する */
     background-attachment: fixed;
     font-family: 'Noto Sans JP', sans-serif;
   }
