@@ -106,9 +106,21 @@ export default function Login() {
           style={{ borderRadius: '50%', marginBottom: '16px' }}
         />
 
-        <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
-          ファンダムを活性化させるプラットフォーム
+        <Typography
+          variant="body1"
+          gutterBottom
+          sx={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+            display: 'inline', // 親要素はインライン表示
+          }}
+        >
+          Vtuberファンダムを
+          <span style={{ display: 'inline', whiteSpace: 'nowrap' }}>活性化させるプラットフォーム</span>
         </Typography>
+
+
+
 
         <TextField
           label="ユーザー名"
@@ -128,12 +140,72 @@ export default function Login() {
         </Button>
 
         {/* クレジットを一貫したスタイルで表示 */}
-        <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 4 }}>
-          Made by KOSAMAX | Powered by React and Material-UI
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 4, display: 'inline' }} // 親要素はインライン表示
+        >
+          Made by KOSAMAX
+          <span
+            style={{
+              display: 'inline',
+              whiteSpace: 'nowrap',
+              position: 'relative',
+            }}
+          >
+            <span
+              style={{
+                display: 'inline-block',
+                margin: '0 0.5rem',
+              }}
+            >
+              {/* | を表示する擬似要素 */}
+              <span
+                style={{
+                  display: 'none', // デフォルトは非表示
+                }}
+                className="separator"
+              >
+                |
+              </span>
+            </span>
+            Powered by React and Material-UI
+          </span>
         </Typography>
 
-        <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 1 }}>
-          Background Image: UTAIRO BOX | Icon Image: Adobe Firefly
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 1, display: 'inline' }} // 親要素はインライン表示
+        >
+          Background Image: UTAIRO BOX
+          <span
+            style={{
+              display: 'inline',
+              whiteSpace: 'nowrap',
+              position: 'relative',
+            }}
+          >
+            <span
+              style={{
+                display: 'inline-block',
+                margin: '0 0.5rem',
+              }}
+            >
+              {/* | を表示する擬似要素 */}
+              <span
+                style={{
+                  display: 'none', // デフォルトは非表示
+                }}
+                className="separator"
+              >
+                |
+              </span>
+            </span>
+            Icon Image: Adobe Firefly
+          </span>
         </Typography>
       </Box>
     </Box>
