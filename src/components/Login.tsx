@@ -16,7 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Login() { // コンポーネント名を変更
+export default function Login() {
   const classes = useStyles();
   const theme = useTheme();
   const [username, setUsername] = useState<string>('');
@@ -66,66 +66,77 @@ export default function Login() { // コンポーネント名を変更
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      p={4}
-      borderRadius={2}
-      maxWidth="600px"
-      width="100%"
-      bgcolor="rgba(255, 255, 255, 0.7)"
-      position="relative"
-      sx={{
-        backdropFilter: 'blur(10px)',
-        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
-      }}
+      minHeight="100vh"
+      
     >
-      <Typography
-        variant="h4"
-        gutterBottom
-        style={{
-          fontFamily: "'Montserrat', sans-serif",
-          letterSpacing: '2px',
-          fontWeight: 'bold',
-          textTransform: 'uppercase',
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+        p={4}
+        borderRadius={2}
+        maxWidth="600px"
+        width="100%"
+        bgcolor="rgba(255, 255, 255, 0.7)"
+        position="relative"
+        sx={{
+          backdropFilter: 'blur(10px)',
+          boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
+          maxHeight: '90vh', // 最大の高さを設定して伸びすぎを防ぐ
+          overflowY: 'auto', // 内容が多すぎる場合はスクロールを表示,
         }}
       >
-        FAVE
-      </Typography>
-      <img
-        src={prefersDarkMode ? darkModeImageUrl : lightModeImageUrl} // prefersDarkModeに基づいて画像を切り替える
-        alt="FAVE"
-        width={200}
-        height={200}
-        style={{ borderRadius: '50%', marginBottom: '16px' }}
-      />
-
-      <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
-        ファンダムを活性化させるプラットフォーム
-      </Typography>
-
-      <TextField
-        label="ユーザー名"
-        variant="outlined"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        onKeyDown={handleKeyDown}
-        sx={{ marginBottom: 2, width: '100%' }}
-      />
-      {error && (
-        <Typography color="error" variant="body2" sx={{ marginBottom: 2 }}>
-          {error}
+        <Typography
+          variant="h4"
+          gutterBottom
+          style={{
+            fontFamily: "'Montserrat', sans-serif",
+            letterSpacing: '2px',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+          }}
+        >
+          FAVE
         </Typography>
-      )}
-      <Button className={classes.root} variant="contained" onClick={handleLogin} fullWidth>
-        ログイン または サインアップ
-      </Button>
+        <img
+          src={prefersDarkMode ? darkModeImageUrl : lightModeImageUrl} // prefersDarkModeに基づいて画像を切り替える
+          alt="FAVE"
+          width={200}
+          height={200}
+          style={{ borderRadius: '50%', marginBottom: '16px' }}
+        />
 
-      {/* クレジットを一貫したスタイルで表示 */}
-      <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 4 }}>
-        Made by KOSAMAX | Powered by React and Material-UI
-      </Typography>
+        <Typography variant="body1" gutterBottom sx={{ fontWeight: 'bold' }}>
+          ファンダムを活性化させるプラットフォーム
+        </Typography>
 
-      <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 1 }}>
-        Background Image: UTAIRO BOX | Icon Image: Adobe Firefly
-      </Typography>
+        <TextField
+          label="ユーザー名"
+          variant="outlined"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          onKeyDown={handleKeyDown}
+          sx={{ marginBottom: 2, width: '100%' }}
+        />
+        {error && (
+          <Typography color="error" variant="body2" sx={{ marginBottom: 2 }}>
+            {error}
+          </Typography>
+        )}
+        <Button className={classes.root} variant="contained" onClick={handleLogin} fullWidth>
+          ログイン または サインアップ
+        </Button>
+
+        {/* クレジットを一貫したスタイルで表示 */}
+        <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 4 }}>
+          Made by KOSAMAX | Powered by React and Material-UI
+        </Typography>
+
+        <Typography variant="body2" color="textSecondary" align="center" sx={{ mt: 1 }}>
+          Background Image: UTAIRO BOX | Icon Image: Adobe Firefly
+        </Typography>
+      </Box>
     </Box>
   );
 }
