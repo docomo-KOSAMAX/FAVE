@@ -44,9 +44,9 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
   }
 
   return (
-    <Box mb={3} p={2} border={1} borderRadius={2} boxShadow={2}>
+    <Box mb={3} p={2} border={1} borderRadius={2} boxShadow={2} bgcolor="background.paper">
       {/* タイトルと投稿日を同じ行に配置 */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" >
         <Typography variant="h6">
           <span style={{ fontSize: '0.75em' }}>Vtuber名:</span> {post.fave_name}
         </Typography>
