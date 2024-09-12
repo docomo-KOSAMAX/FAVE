@@ -16,14 +16,23 @@ const theme = createTheme({
   },
 });
 
+
+
 function App() {
+
+  // onCloseのダミー実装
+  const handleClose = () => {
+    console.log("Post component closed");
+    // 必要ならここにモーダルを閉じるなどの処理を実装
+  };
+  
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter basename={import.meta.env.DEV ? "/" : "/VtuberFukyou/"}>
         <Routes>
           <Route path="/" element={<TimeLine />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/post" element={<Post />} />
+          <Route path="/post" element={<Post onClose={handleClose} />} />
           <Route path="/user" element={<User />} />
         </Routes>
       </BrowserRouter>
