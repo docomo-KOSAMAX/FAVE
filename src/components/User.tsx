@@ -27,7 +27,7 @@ export default function User() {
   };
 
   // リアクションボタンのクリックハンドラ
-  const updateReaction = (id: string, type: 'like' | 'watch' | 'love' | 'new_listener') => {
+  const updateReaction = (id: number, type: 'like' | 'watch' | 'love' | 'new_listener') => {
     // APIにリクエストを送信
     fetch(`/api/favePosts/${userName}/${id}/reactions/${type}`, {
       method: 'POST',
@@ -59,10 +59,10 @@ export default function User() {
   };
 
   // 各リアクションのハンドラ
-  const handleLike = (id: string) => updateReaction(id, 'like');
-  const handleWatch = (id: string) => updateReaction(id, 'watch');
-  const handleLove = (id: string) => updateReaction(id, 'love');
-  const handleNewListener = (id: string) => updateReaction(id, 'new_listener');
+  const handleLike = (id: number) => updateReaction(id, 'like');
+  const handleWatch = (id: number) => updateReaction(id, 'watch');
+  const handleLove = (id: number) => updateReaction(id, 'love');
+  const handleNewListener = (id: number) => updateReaction(id, 'new_listener');
 
   // APIから投稿と推し情報を取得
   useEffect(() => {
@@ -78,14 +78,13 @@ export default function User() {
         })
         .then((data: FavePost[]) => {
           setPosts(data);
-          setError(null);
         })
         .catch((error) => {
           console.error('Error fetching posts:', error);
           // 取得に失敗した場合はダミーデータを使用
           const dummyData: FavePost[] = [
             {
-              id: '1',
+              id: 1,
               message: '推しの歌声が毎日の活力！この曲を聴くと元気が出ます！',
               fave_id: 1,
               date_time: '2024-09-11 10:00',
@@ -98,7 +97,7 @@ export default function User() {
               },
             },
             {
-              id: '2',
+              id: 2,
               message: '推しのゲーム実況、本当に面白い！もっとたくさん見たい！',
               fave_id: 2,
               date_time: '2024-09-12 12:00',
@@ -126,19 +125,18 @@ export default function User() {
         })
         .then((data: Fave[]) => {
           setFaves(data);
-          setError(null);
         })
         .catch((error) => {
           console.error('Error fetching faves:', error);
           // 取得に失敗した場合はダミーデータを使用
           const faveData: Fave[] = [
             {
-              fave_id: 1,
-              fave_name: '赤身かるび',
+              id: 1,
+              fave_name: 'サンプル1',
             },
             {
-              fave_id: 2,
-              fave_name: '琵琶湖くん',
+              id: 2,
+              fave_name: 'サンプル2',
             },
           ];
           setFaves(faveData);

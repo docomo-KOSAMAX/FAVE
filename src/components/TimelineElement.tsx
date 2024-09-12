@@ -3,7 +3,7 @@ import { Box, Typography, Button } from '@mui/material';
 
 // タイムライン要素の型定義
 type Post = {
-  id: string;
+  id: number;
   message: string;
   fave_id: number;
   date_time: string;
@@ -20,10 +20,10 @@ type Post = {
 interface TimelineElementProps {
   post: Post;
   error?: string | null;
-  onLike: (id: string) => void;
-  onWatch: (id: string) => void;
-  onLove: (id: string) => void;
-  onNewListener: (id: string) => void;
+  onLike: (id: number) => void;
+  onWatch: (id: number) => void;
+  onLove: (id: number) => void;
+  onNewListener: (id: number) => void;
 }
 
 // タイムライン要素コンポーネント
