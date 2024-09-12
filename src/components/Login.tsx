@@ -108,6 +108,16 @@ export default function App() {
       <Button className={classes.root} variant="contained" onClick={handleLogin} fullWidth>
         ログイン または サインアップ
       </Button>
+
+      {/* 下部の表記を追加 */}
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        align="center"
+        sx={{ mt: 4 }}
+      >
+        Made by KOSAMAX Powered by React and Material-UI
+      </Typography>
     </Box>
   );
 }

@@ -87,7 +87,7 @@ export default function User() {
   useEffect(() => {
     if (userName) {
       setLoading(true); // データ取得前にローディングを開始
-      fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/huga`)
+      fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('投稿データの取得に失敗しました');
