@@ -5,7 +5,7 @@ import { Box, Typography, Button } from '@mui/material';
 type Post = {
   id: string;
   message: string;
-  fave_id: string;
+  fave_id: number;
   date_time: string;
   fave_name: string;
   reactions: {

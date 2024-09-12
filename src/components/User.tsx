@@ -68,7 +68,8 @@ export default function User() {
   useEffect(() => {
     if (userName) {
       // APIから投稿データを取得
-      fetch(`/api/favePosts/${userName}`)
+      //fetch(`/api/favePosts/${userName}`)
+      fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/huga`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('投稿データの取得に失敗しました');
@@ -86,7 +87,7 @@ export default function User() {
             {
               id: '1',
               message: '推しの歌声が毎日の活力！この曲を聴くと元気が出ます！',
-              fave_id: 'fave1',
+              fave_id: 1,
               date_time: '2024-09-11 10:00',
               post_by: userName || '',
               reactions: {
@@ -99,7 +100,7 @@ export default function User() {
             {
               id: '2',
               message: '推しのゲーム実況、本当に面白い！もっとたくさん見たい！',
-              fave_id: 'fave2',
+              fave_id: 2,
               date_time: '2024-09-12 12:00',
               post_by: userName || '',
               reactions: {
@@ -116,7 +117,7 @@ export default function User() {
         });
 
       // APIから推し情報を取得
-      fetch('/api/fave')
+      fetch('https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves')
         .then((response) => {
           if (!response.ok) {
             throw new Error('推し情報の取得に失敗しました');
@@ -132,11 +133,11 @@ export default function User() {
           // 取得に失敗した場合はダミーデータを使用
           const faveData: Fave[] = [
             {
-              fave_id: 'fave1',
+              fave_id: 1,
               fave_name: '赤身かるび',
             },
             {
-              fave_id: 'fave2',
+              fave_id: 2,
               fave_name: '琵琶湖くん',
             },
           ];
