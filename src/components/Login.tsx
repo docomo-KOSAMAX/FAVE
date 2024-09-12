@@ -67,7 +67,6 @@ export default function Login() {
       alignItems="center"
       justifyContent="center"
       minHeight="100vh"
-      
     >
       <Box
         display="flex"
@@ -75,9 +74,8 @@ export default function Login() {
         alignItems="center"
         justifyContent="center"
         p={4}
-        borderRadius={2}
         maxWidth="600px"
-        width="100%"
+        width="80%"
         bgcolor="rgba(255, 255, 255, 0.7)"
         position="relative"
         sx={{
@@ -85,6 +83,7 @@ export default function Login() {
           boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
           maxHeight: '90vh', // 最大の高さを設定して伸びすぎを防ぐ
           overflowY: 'auto', // 内容が多すぎる場合はスクロールを表示,
+          borderRadius: 2, // 角丸の設定を追加
         }}
       >
         <Typography
