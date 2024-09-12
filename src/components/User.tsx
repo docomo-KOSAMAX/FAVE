@@ -209,10 +209,24 @@ export default function User() {
   return (
     <div>
       {/* タイトルを上部に固定 */}
-      <Box mt={2} mb={2}>
-        <Typography variant="h4">{userName}の投稿</Typography>
-      </Box>
       <Header></Header>
+      <Box mt={2} mb={2} textAlign="center">
+        <Typography
+          variant="h5"
+          align="center"
+          sx={{
+            backgroundColor: 'rgba(255, 255, 255, 0.8)', // 背景色を白に設定（透明度を調整）
+            backdropFilter: 'blur(10px)', // 背景のぼかし効果
+            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)', // 全方向に影を追加
+            display: 'inline-block', // 背景色がテキストにフィットするように設定
+            padding: '8px 16px', // パディングを追加して余白を作成
+            borderRadius: '8px', // 角を丸める
+          }}
+        >
+          あなた({userName})の投稿です
+        </Typography>
+      </Box>
+
 
       {/* 投稿を表示するセクション */}
       <Box mt={2}>

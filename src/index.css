@@ -24,13 +24,31 @@ a:hover {
 }
 
 body {
-  margin: auto;
+  margin: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 320px;
-  max-width: 600px;
+  max-width: 100%;
   min-height: 100vh;
+  overflow-x: hidden;
+  padding: 0;
+}
+
+#root {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  overflow-x: hidden;
+  padding: 0 8px;
+  box-sizing: border-box;
+  min-height: 100vh;
+  /* 追加：縦の最小高さを画面全体に設定 */
+  display: flex;
+  flex-direction: column;
+  /* 要素を縦に配置 */
+  justify-content: space-between;
+  /* 上下の余白を均等に配置 */
 }
 
 h1 {
@@ -62,7 +80,6 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    /* background: linear-gradient(to right, #ffcdcd, #fffec4); */
   }
 
   a:hover {
@@ -78,32 +95,6 @@ button:focus-visible {
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    /* 背景を固定する */
-    background-attachment: fixed;
-    font-family: 'Noto Sans JP', sans-serif;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    color: #213547;
-    /* background: linear-gradient(to right, #ffcdcd, #fffec4); */
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
-
-  html {
-    background-image: url('https://sakuranouta.biz/wp-content/uploads/2024/03/%E9%97%87%E3%83%9D%E3%83%83%E3%83%97%E8%B5%A4_%EF%BC%92_%E3%82%A2%E3%83%BC%E3%83%88%E3%83%9C%E3%83%BC%E3%83%89-1.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* 背景を固定する */
     background-attachment: fixed;
     font-family: 'Noto Sans JP', sans-serif;
   }
