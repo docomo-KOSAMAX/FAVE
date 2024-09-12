@@ -155,7 +155,9 @@ export default function User() {
       // postsとfavesのデータをマージ
       const merged = posts.map((post) => {
         // 対応するfave_nameを見つける
-        const matchedFave = faves.find((fave) => fave.fave_id === post.fave_id);
+        //それぞれのfave_idを確認する
+        console.log(post.fave_id)
+        const matchedFave = faves.find((fave) => Number(fave.id) === Number(post.fave_id)); // 型を一致させる
         return {
           ...post,
           fave_name: matchedFave ? matchedFave.fave_name : '不明な推し', // 見つからなければデフォルト値を使用
@@ -165,6 +167,7 @@ export default function User() {
       setMergedPosts(merged); // マージされた結果をステートに設定
     }
   }, [posts, faves]);
+
 
   return (
     <div>

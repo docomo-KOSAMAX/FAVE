@@ -6,7 +6,7 @@ import User from './components/User'
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.DEV ? "/" : "/VtuberFukyou/"}>
       <Routes>
         <Route path="/" element={<TimeLine />} />
         <Route path="/login" element={<Login />} />

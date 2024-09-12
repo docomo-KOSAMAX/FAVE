@@ -1,5 +1,5 @@
 export type FavePost = {
-  id: string; // postのid
+  id: number; // postのid
   message: string; // 推しポイント説明
   fave_id: number; // 推しのid (Favesテーブル)
   date_time: string; // 投稿日時
@@ -13,6 +13,6 @@ export type FavePost = {
 };
 
 export type Fave = {
-  fave_id: number; // 推しのid (Favesテーブル)
+  id: number; // 推しのid (Favesテーブル)
   fave_name: string; // 推しの名前
 };
