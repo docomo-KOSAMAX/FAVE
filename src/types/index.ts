@@ -1,7 +1,7 @@
 export type FavePost = {
   id: string; // postのid
   message: string; // 推しポイント説明
-  fave_id: string; // 推しのid (Favesテーブル)
+  fave_id: number; // 推しのid (Favesテーブル)
   date_time: string; // 投稿日時
   post_by: string; // ポストした人のid (Usersテーブル)
   reactions: {
@@ -13,6 +13,6 @@ export type FavePost = {
 };
 
 export type Fave = {
-  fave_id: string; // 推しのid (Favesテーブル)
+  fave_id: number; // 推しのid (Favesテーブル)
   fave_name: string; // 推しの名前
 };
