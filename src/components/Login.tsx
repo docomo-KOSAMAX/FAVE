@@ -24,21 +24,32 @@ export default function App() {
 
   const handleLogin = () => {
     if (username) {
-      // APIを叩いてユーザー名の検証を行う
-      fetch(`/api/users/${username}`)
+      // APIを叩いてユーザー名の検証を行う(Postで)
+      // `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/users/${username}`
+      fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/users/${username}`, {
+        method: 'POST',
+      })
         .then((response) => {
-          if (!response.ok) {
-            throw new Error('ユーザー名が無効です。');
+          if (!response.ok && response.status!==201) {
+            //レスポンスの表示
+            throw new Error('ユーザー名が無効です。' + response.statusText);
+          }
+          if (response.status === 201) {
+            //ユーザーを新規作成しましたとポップアップ表示
+            alert('ユーザーを新規作成しました。');
           }
           return response.json();
         })
+        .then(() => {
+          // 遷移
+          navigate(`/?name=${username}`);
+        })
         .catch((error) => {
-          console.error('Error logging in:', error);
+          console.error('【Error logging in】:', error);
           setError('ログインに失敗しました。ユーザー名を確認してください。');
         });
 
-      // 遷移
-      navigate(`/?name=${username}`);
+
 
     }
   };
