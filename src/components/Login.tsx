@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, TextField, Button, Typography, useTheme, useMediaQuery } from '@mui/material'; // useMediaQueryをインポート
 import { makeStyles } from '@mui/styles';
+import faveLogo from '../assets/fave.svg';
 
 const useStyles = makeStyles({
   root: {
@@ -86,18 +87,13 @@ export default function Login() {
           borderRadius: 2, // 角丸の設定を追加
         }}
       >
-        <Typography
-          variant="h4"
-          gutterBottom
-          style={{
-            fontFamily: "'Montserrat', sans-serif",
-            letterSpacing: '2px',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-          }}
-        >
-          FAVE
-        </Typography>
+        {/* SVG画像の表示 */}
+        <img
+          src={faveLogo}
+          alt="FAVE Logo"
+          style={{ width: '200px', height: 'auto', marginBottom: '16px' }}
+        />
+
         <img
           src={prefersDarkMode ? darkModeImageUrl : lightModeImageUrl} // prefersDarkModeに基づいて画像を切り替える
           alt="FAVE"
