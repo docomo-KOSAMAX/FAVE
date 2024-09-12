@@ -3,21 +3,14 @@ import { Button, Box, Typography } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 import { FavePost, Fave } from "../types/index"; // 型のインポート
-
-export default function App() {
-  const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
-  const [faves, setFaves] = useState<Fave[]>([]); // 推し情報を管理するためのステート
-  const [reloadCount, setReloadCount] = useState(0);
-  const [mergedPosts, setMergedPosts] = useState<
-    (FavePost & { fave_name: string })[]
-  >([]); // マージしたデータを保持するためのステート
-  const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
-  const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+import { Header } from "./Headerams] = useSearchParams();
 
   // URLからユーザー名を取得
   const userName = searchParams.get("name");
 
+  if (!userName) {
+    navigate("/login");
+  }
   // 投稿ボタンをクリックしたときに呼び出される関数
   const handleNavigateToPost = () => {
     navigate(`/post/?name=${userName}`);
@@ -184,7 +177,8 @@ export default function App() {
 
   return (
     <div>
-      <h1>タイムライン</h1>
+      {/* <h1>タイムライン</h1> */}
+      <Header></Header>
 
       {/* 投稿を表示するセクション */}
       <Box mt={4}>
@@ -238,6 +232,6 @@ export default function App() {
           更新する
         </Button>
       </Box>
-  </div>
+    </div>
   );
 }
