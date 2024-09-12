@@ -3,6 +3,7 @@ import { Button, Box, Typography } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 import { FavePost, Fave } from "../types/index"; // 型のインポート
+import { Header } from "./Header";
 
 export default function App() {
   const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
@@ -187,7 +188,8 @@ export default function App() {
 
   return (
     <div>
-      <h1>タイムライン</h1>
+      {/* <h1>タイムライン</h1> */}
+      <Header></Header>
 
       {/* 投稿を表示するセクション */}
       <Box mt={4}>
