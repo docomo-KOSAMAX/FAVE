@@ -2,6 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { TextField, Button } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { FavePost, Fave } from '../types/index'; // 型のインポート
 
 import axios from "axios";
 
@@ -10,11 +11,11 @@ export default function App() {
   const [newPost, setnewPost] = useState<string>(""); //投稿ボックスに入力された文字列を保持
   const [searchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(""); //検索ボックスに入力された文字列を保持
-  const [filteredFaves, setFilteredFaves] = useState<FaveData[]>([]); //入力に基づいてフィルタリングされた候補データを保持
+  const [filteredFaves, setFilteredFaves] = useState<Fave[]>([]); //入力に基づいてフィルタリングされた候補データを保持
   const [selectedfaveId, setSelectedfaveId] = useState<number | null>(null); // ユーザーが選択したfavesのIDを保持
   const [selectedfaveName, setSelectedfaveName] = useState<string | null>(null); //ユーザーが選択したfavesの名前を保持
   const [errorMessage, setErrorMessage] = useState<string>(""); // エラーメッセージ用の state を追加
-  const [faveData, setFaveData] = useState<FaveData[]>([]); // faveData を state に保存
+  const [faveData, setFaveData] = useState<Fave[]>([]); // faveData を state に保存
 
   // URLからユーザー名を取得
   const userName = searchParams.get("name");
@@ -60,7 +61,13 @@ export default function App() {
     }
 
     // ユーザー名をハッシュ化してからタイムスタンプと組み合わせる
-    const postid: number = Number(`${hashString(userName)}${Date.now()}`);
+    let postid: number = 0;
+    if (userName !== null) {
+      postid = Number(`${hashString(userName)}${Date.now()}`);
+    } else { 
+      console.error("ユーザー名が取得できません");
+      return;
+    }
 
     //送信するデータ
     const data = {
@@ -106,7 +113,7 @@ export default function App() {
   };
 
   //候補が選択されたときの処理
-  const handleSelect = (fave: FaveData) => {
+  const handleSelect = (fave: Fave) => {
     setSelectedfaveId(fave.id);
     setSelectedfaveName(fave.fave_name);
     setSearchTerm(""); // 選択後に検索ボックスをクリアする場合
