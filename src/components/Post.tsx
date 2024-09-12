@@ -17,14 +17,21 @@ export default function App() {
   const [errorMessage, setErrorMessage] = useState<string>(""); // エラーメッセージ用の state を追加
   const [faveData, setFaveData] = useState<Fave[]>([]); // faveData を state に保存
 
+  // Axiosインスタンスの作成
+const api = axios.create({
+  baseURL: 'https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test', // ここにBaseURLを設定
+  // 必要に応じて、他のデフォルト設定も追加できます
+  timeout: 1000, // タイムアウト設定
+});
+
   // URLからユーザー名を取得
   const userName = searchParams.get("name");
 
   // コンポーネントのマウント時にVTuberのリストを取得
   useEffect(() => {
     axios
-      .get(
-        "https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves"
+      api.get(
+        "/api/faves"
       )
       .then((response) => {
         setFaveData(response.data); // faveData を state に設定
@@ -87,7 +94,7 @@ export default function App() {
     console.log(data);
 
     axios
-      .post(`/api/faveposts/${userName}`, data)
+      api.post(`/api/favePosts/${userName}`, data)
       .then((response) => {
         console.log("Post successful:", response);
         // 投稿が成功したらタイムラインに遷移
