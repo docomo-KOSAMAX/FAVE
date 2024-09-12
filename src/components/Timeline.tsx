@@ -254,7 +254,15 @@ export default function App() {
         <Button variant="contained" color="primary" onClick={handleOpen}>
           投稿する
         </Button>
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          fullWidth
+          maxWidth="sm"
+          PaperProps={{
+            sx: { backgroundColor: 'transparent', boxShadow: 'none' },
+          }}
+          >
           <DialogContent>
             <Post onClose={handleClose} />
           </DialogContent>

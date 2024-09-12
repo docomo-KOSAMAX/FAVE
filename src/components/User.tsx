@@ -273,7 +273,15 @@ export default function User() {
         >
           投稿する
         </Button>
-        <Dialog open={open} onClose={handleClose} fullWidth maxWidth="sm">
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          fullWidth
+          maxWidth="sm"
+          PaperProps={{
+            sx: { backgroundColor: 'transparent', boxShadow: 'none' },
+          }}
+          >
         <DialogContent>
           <Post onClose={handleClose} />
         </DialogContent>
