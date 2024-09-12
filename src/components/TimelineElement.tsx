@@ -1,5 +1,10 @@
 import React from 'react';
-import { Box, Typography, Button } from '@mui/material';
+import { Box, Typography, IconButton, Tooltip } from '@mui/material';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // 日付フォーマット変換関数
 const formatDateTime = (dateTimeString: string) => {
@@ -32,10 +37,10 @@ type Post = {
 interface TimelineElementProps {
   post: Post;
   error?: string | null;
-  onLike: (id: number) => void;
-  onWatch: (id: number) => void;
-  onLove: (id: number) => void;
-  onNewListener: (id: number) => void;
+  onLike?: (id: number) => void; // optional に変更
+  onWatch?: (id: number) => void; // optional に変更
+  onLove?: (id: number) => void; // optional に変更
+  onNewListener?: (id: number) => void; // optional に変更
   onDelete?: (id: number) => void; // 削除ボタン用のオプション関数
 }
 
@@ -47,7 +52,7 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
   onWatch,
   onLove,
   onNewListener,
-  onDelete, // 削除ボタン用関数を追加
+  onDelete,
 }) => {
   if (error) {
     return (
@@ -58,38 +63,122 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
   }
 
   return (
-    <Box mb={3} p={2} border={1} borderRadius={2} boxShadow={2} bgcolor="background.paper">
+    <Box
+      mb={3}
+      p={2}
+      borderRadius={2}
+      bgcolor="rgba(255, 255, 255, 0.7)" // 半透明の白い背景
+      position="relative"
+      sx={{
+        backdropFilter: 'blur(10px)', // 背景のぼかし効果
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)', // 全方向に影を追加
+      }}
+    >
       {/* タイトルと投稿日を同じ行に配置 */}
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Typography variant="h6">
           {post.fave_name} <span style={{ fontSize: '0.75em' }}>推し</span>
         </Typography>
-        <Box textAlign="right">
+        <Box display="flex" alignItems="center">
           {/* 投稿者と投稿日を表示 */}
-          <Typography variant="body2">{formatDateTime(post.date_time)}</Typography>
+          <Typography variant="body2" mr={1} color="text.secondary">
+            {formatDateTime(post.date_time)}
+          </Typography>
+          {/* 削除ボタン（関数が渡された場合のみ表示） */}
+          {onDelete && (
+            <IconButton
+              color="error"
+              onClick={() => onDelete(post.id)}
+              sx={{
+                transition: 'transform 0.2s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.2)',
+                },
+              }}
+            >
+              <DeleteIcon fontSize="small" />
+            </IconButton>
+          )}
         </Box>
       </Box>
-      <Typography>{post.message}</Typography>
-      <Box mt={1}>
-        {/* リアクションボタン */}
-        <Button variant="outlined" size="small" onClick={() => onLike(post.id)}>
-          👍 いいね: {post.reactions.like}
-        </Button>{' '}
-        <Button variant="outlined" size="small" onClick={() => onWatch(post.id)}>
-          👀 見たよ: {post.reactions.watch}
-        </Button>{' '}
-        <Button variant="outlined" size="small" onClick={() => onLove(post.id)}>
-          💘 好き: {post.reactions.love}
-        </Button>{' '}
-        <Button variant="outlined" size="small" onClick={() => onNewListener(post.id)}>
-          🆕 リスナーになったよ！: {post.reactions.new_listener}
-        </Button>
-        {/* 削除ボタン（関数が渡された場合のみ表示） */}
-        {onDelete && (
-          <Button variant="outlined" size="small" color="error" onClick={() => onDelete(post.id)}>
-            🗑️ 削除
-          </Button>
-        )}
+      {/* メッセージ部分に余白を追加してボタンと重ならないようにする */}
+      <Typography mt={1} mb={4}>
+        {post.message}
+      </Typography>
+      <Box position="absolute" bottom={8} right={8} display="flex" gap={1}>
+        {/* リアクションアイコンボタン */}
+        <Tooltip title="いいね">
+          <IconButton
+            color="primary"
+            onClick={() => onLike?.(post.id)}
+            disabled={!onLike}
+            size="small"
+            sx={{
+              '&:focus': {
+                outline: 'none',
+              },
+            }}
+          >
+            <ThumbUpAltIcon fontSize="small" />
+            <Typography variant="caption" ml={0.5}>
+              {post.reactions.like}
+            </Typography>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="見たよ">
+          <IconButton
+            color="info"
+            onClick={() => onWatch?.(post.id)}
+            disabled={!onWatch}
+            size="small"
+            sx={{
+              '&:focus': {
+                outline: 'none',
+              },
+            }}
+          >
+            <VisibilityIcon fontSize="small" />
+            <Typography variant="caption" ml={0.5}>
+              {post.reactions.watch}
+            </Typography>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="好き">
+          <IconButton
+            color="secondary"
+            onClick={() => onLove?.(post.id)}
+            disabled={!onLove}
+            size="small"
+            sx={{
+              '&:focus': {
+                outline: 'none',
+              },
+            }}
+          >
+            <FavoriteIcon fontSize="small" />
+            <Typography variant="caption" ml={0.5}>
+              {post.reactions.love}
+            </Typography>
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="リスナーになったよ！">
+          <IconButton
+            color="success"
+            onClick={() => onNewListener?.(post.id)}
+            disabled={!onNewListener}
+            size="small"
+            sx={{
+              '&:focus': {
+                outline: 'none',
+              },
+            }}
+          >
+            <PersonAddIcon fontSize="small" />
+            <Typography variant="caption" ml={0.5}>
+              {post.reactions.new_listener}
+            </Typography>
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );

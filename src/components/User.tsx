@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Box, Typography } from '@mui/material';
+import { Button, Box, Typography, CircularProgress } from '@mui/material'; // CircularProgressをインポート
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import TimelineElement from './TimelineElement'; // コンポーネントのインポート
 import { FavePost, Fave } from '../types/index'; // 型のインポート
@@ -9,6 +9,7 @@ export default function User() {
   const [faves, setFaves] = useState<Fave[]>([]); // 推し情報を管理するためのステート
   const [mergedPosts, setMergedPosts] = useState<(FavePost & { fave_name: string })[]>([]); // マージしたデータを保持するためのステート
   const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
+  const [loading, setLoading] = useState<boolean>(true); // ローディング状態を管理するステート
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -58,6 +59,24 @@ export default function User() {
     );
   };
 
+  // 投稿の削除ボタンのクリックハンドラ
+  const handleDelete = (id: number) => {
+    fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}/${id}`, {
+      method: 'DELETE',
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('投稿の削除に失敗しました');
+        }
+      })
+      .catch((error) => {
+        console.error('Error deleting post:', error);
+        setError('投稿の削除に失敗しました');
+      });
+    // 削除が成功したら、ステートから削除された投稿を取り除く
+    setMergedPosts((prevPosts) => prevPosts.filter((post) => post.id !== id));
+  };
+
   // 各リアクションのハンドラ
   const handleLike = (id: number) => updateReaction(id, 'like');
   const handleWatch = (id: number) => updateReaction(id, 'watch');
@@ -67,9 +86,8 @@ export default function User() {
   // APIから投稿と推し情報を取得
   useEffect(() => {
     if (userName) {
-      // APIから投稿データを取得
-      //fetch(`/api/favePosts/${userName}`)
-      fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/huga`)
+      setLoading(true); // データ取得前にローディングを開始
+      fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}`)
         .then((response) => {
           if (!response.ok) {
             throw new Error('投稿データの取得に失敗しました');
@@ -81,7 +99,6 @@ export default function User() {
         })
         .catch((error) => {
           console.error('Error fetching posts:', error);
-          // 取得に失敗した場合はダミーデータを使用
           const dummyData: FavePost[] = [
             {
               id: 1,
@@ -109,13 +126,12 @@ export default function User() {
                 new_listener: 2,
               },
             },
-            // 他のダミーデータも追加
           ];
           setPosts(dummyData);
           setError('投稿データの取得に失敗しました。ダミーデータを表示しています。');
-        });
+        })
+        .finally(() => setLoading(false)); // データ取得後にローディングを終了
 
-      // APIから推し情報を取得
       fetch('https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves')
         .then((response) => {
           if (!response.ok) {
@@ -128,7 +144,6 @@ export default function User() {
         })
         .catch((error) => {
           console.error('Error fetching faves:', error);
-          // 取得に失敗した場合はダミーデータを使用
           const faveData: Fave[] = [
             {
               id: 1,
@@ -144,50 +159,60 @@ export default function User() {
         });
     } else {
       setError('ユーザー名が指定されていません。');
+      setLoading(false); // エラーの場合にもローディングを終了
     }
   }, [userName]);
 
   // 投稿と推し情報をマージしてfave_nameを追加
   useEffect(() => {
     if (posts.length > 0 && faves.length > 0) {
-      // postsとfavesのデータをマージ
       const merged = posts.map((post) => {
-        // 対応するfave_nameを見つける
-        //それぞれのfave_idを確認する
-        console.log(post.fave_id)
-        const matchedFave = faves.find((fave) => Number(fave.id) === Number(post.fave_id)); // 型を一致させる
+        console.log(post.fave_id);
+        const matchedFave = faves.find((fave) => Number(fave.id) === Number(post.fave_id));
         return {
           ...post,
-          fave_name: matchedFave ? matchedFave.fave_name : '不明な推し', // 見つからなければデフォルト値を使用
+          fave_name: matchedFave ? matchedFave.fave_name : '不明な推し',
         };
       });
 
-      setMergedPosts(merged); // マージされた結果をステートに設定
+      setMergedPosts(merged);
     }
   }, [posts, faves]);
 
-
   return (
     <div>
-      <h1>{userName}の投稿</h1>
+      {/* タイトルを上部に固定 */}
+      <Box mt={2} mb={2}>
+        <Typography variant="h4">
+          {userName}の投稿
+        </Typography>
+      </Box>
 
       {/* 投稿を表示するセクション */}
-      <Box mt={4}>
-        {error && (
-          <Typography color="error" variant="h6">
-            {error}
-          </Typography>
+      <Box mt={2}>
+        {loading ? ( // ローディング中の表示
+          <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+            <CircularProgress /> {/* ローディングスピナーを表示 */}
+            <Typography variant="h6" mt={2}>
+              ローディング中...
+            </Typography>
+          </Box>
+        ) : (
+          <>
+            {error && (
+              <Typography color="error" variant="h6">
+                {error}
+              </Typography>
+            )}
+            {mergedPosts.map((post) => (
+              <TimelineElement
+                key={post.id}
+                post={post}
+                onDelete={handleDelete} // 削除ハンドラを追加
+              />
+            ))}
+          </>
         )}
-        {mergedPosts.map((post) => (
-          <TimelineElement
-            key={post.id}
-            post={post}
-            onLike={handleLike}
-            onWatch={handleWatch}
-            onLove={handleLove}
-            onNewListener={handleNewListener}
-          />
-        ))}
       </Box>
 
       {/* 画面右下に固定されたボタン */}
@@ -210,4 +235,5 @@ export default function User() {
       </Box>
     </div>
   );
+
 }

@@ -24,33 +24,25 @@ export default function App() {
 
   const handleLogin = () => {
     if (username) {
-      // APIを叩いてユーザー名の検証を行う(Postで)
-      // `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/users/${username}`
       fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/users/${username}`, {
         method: 'POST',
       })
         .then((response) => {
-          if (!response.ok && response.status!==201) {
-            //レスポンスの表示
+          if (!response.ok && response.status !== 201) {
             throw new Error('ユーザー名が無効です。' + response.statusText);
           }
           if (response.status === 201) {
-            //ユーザーを新規作成しましたとポップアップ表示
             alert('ユーザーを新規作成しました。');
           }
           return response.json();
         })
         .then(() => {
-          // 遷移
           navigate(`/?name=${username}`);
         })
         .catch((error) => {
           console.error('【Error logging in】:', error);
           setError('ログインに失敗しました。ユーザー名を確認してください。');
         });
-
-
-
     }
   };
 
@@ -67,14 +59,16 @@ export default function App() {
       alignItems="center"
       justifyContent="center"
       p={4}
-      border={1}
       borderRadius={2}
-      boxShadow={3}
       maxWidth="600px"
       width="100%"
-      bgcolor="background.paper"
+      bgcolor="rgba(255, 255, 255, 0.7)" // 半透明の白い背景
+      position="relative"
+      sx={{
+        backdropFilter: 'blur(10px)', // 背景のぼかし効果
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)', // 全方向に影を追加
+      }}
     >
-
       <Typography
         variant="h4"
         gutterBottom
@@ -88,7 +82,7 @@ export default function App() {
         FAVE
       </Typography>
       <img
-        src="https://media.discordapp.net/attachments/968784586542829629/1283389160509407325/image.png?ex=66e2d0cc&is=66e17f4c&hm=9958737aacae580190375e2e7355abcda0b0fc442213b298e2501e554d4d7c2f&=&format=webp&quality=lossless&width=365&height=369"
+        src="https://media.discordapp.net/attachments/968784586542829629/1283740202304798721/Firefly_logo_web_app_anime_vtuber_96844.jpg?ex=66e417ba&is=66e2c63a&hm=84c3e92b442163058740fb63603d38d27b824479a63e7f736303451f99aa285a&=&format=webp&width=675&height=689"
         alt="FAVE"
         width={200}
         height={200}
@@ -114,6 +108,16 @@ export default function App() {
       <Button className={classes.root} variant="contained" onClick={handleLogin} fullWidth>
         ログイン または サインアップ
       </Button>
+
+      {/* 下部の表記を追加 */}
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        align="center"
+        sx={{ mt: 4 }}
+      >
+        Made by KOSAMAX Powered by React and Material-UI
+      </Typography>
     </Box>
   );
 }
