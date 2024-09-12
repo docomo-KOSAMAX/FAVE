@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Button, Box, Typography } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
+import { FavePost, Fave } from "../types/index"; // 型のインポート
 
 export default function App() {
-  const [posts, setPosts] = useState<any[]>([]); // 投稿を管理するためのステート
-  const [faves, setFaves] = useState<any[]>([]); // 推し情報を管理するためのステート
+  const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
+  const [faves, setFaves] = useState<Fave[]>([]); // 推し情報を管理するためのステート
   const [reloadCount, setReloadCount] = useState(0);
-  const [mergedPosts, setMergedPosts] = useState<any[]>([]); // マージしたデータを保持するためのステート
+  const [mergedPosts, setMergedPosts] = useState<
+    (FavePost & { fave_name: string })[]
+  >([]); // マージしたデータを保持するためのステート
   const [error, setError] = useState<string | null>(null); // エラーメッセージを管理するステート
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -31,7 +34,7 @@ export default function App() {
 
   // リアクションボタンのクリックハンドラ
   const updateReaction = (
-    id: string,
+    id: number,
     type: "like" | "watch" | "love" | "new_listener"
   ) => {
     // APIにリクエストを送信
@@ -64,16 +67,19 @@ export default function App() {
   };
 
   // 各リアクションのハンドラ
-  const handleLike = (id: string) => updateReaction(id, "like");
-  const handleWatch = (id: string) => updateReaction(id, "watch");
-  const handleLove = (id: string) => updateReaction(id, "love");
-  const handleNewListener = (id: string) => updateReaction(id, "new_listener");
+  const handleLike = (id: number) => updateReaction(id, "like");
+  const handleWatch = (id: number) => updateReaction(id, "watch");
+  const handleLove = (id: number) => updateReaction(id, "love");
+  const handleNewListener = (id: number) => updateReaction(id, "new_listener");
 
   // APIから投稿と推し情報を取得
   useEffect(() => {
     if (userName) {
       // APIから投稿データを取得
-      fetch(`/api/favePosts/timeline/${userName}`)
+      // fetch(`/api/favePosts/timeline/${userName}`)
+      fetch(
+        `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/timeline/huga`
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("投稿データの取得に失敗しました");
@@ -89,9 +95,9 @@ export default function App() {
           // 取得に失敗した場合はダミーデータを使用
           const dummyData = [
             {
-              id: "1",
+              id: 1,
               message: "これはダミーデータの投稿です。",
-              fave_id: "fave1",
+              fave_id: 1,
               date_time: "2024-09-11 10:00",
               post_by: userName,
               reactions: {
@@ -102,9 +108,9 @@ export default function App() {
               },
             },
             {
-              id: "2",
+              id: 2,
               message: "こちらもダミーデータの投稿です。",
-              fave_id: "fave2",
+              fave_id: 2,
               date_time: "2024-09-12 12:00",
               post_by: userName,
               reactions: {
@@ -122,7 +128,9 @@ export default function App() {
         });
 
       // APIから推し情報を取得
-      fetch("/api/fave")
+      fetch(
+        "https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves"
+      )
         .then((response) => {
           if (!response.ok) {
             throw new Error("推し情報の取得に失敗しました");
@@ -138,11 +146,11 @@ export default function App() {
           // 取得に失敗した場合はダミーデータを使用
           const faveData = [
             {
-              fave_id: "fave1",
+              id: 1,
               fave_name: "赤身かるび",
             },
             {
-              fave_id: "fave2",
+              id: 2,
               fave_name: "琵琶湖くん",
             },
           ];
@@ -162,7 +170,8 @@ export default function App() {
       // postsとfavesのデータをマージ
       const merged = posts.map((post) => {
         // 対応するfave_nameを見つける
-        const matchedFave = faves.find((fave) => fave.fave_id === post.fave_id);
+        console.log(post.fave_id);
+        const matchedFave = faves.find((fave) => fave.id === post.fave_id);
         return {
           ...post,
           fave_name: matchedFave ? matchedFave.fave_name : "不明な推し", // 見つからなければデフォルト値を使用
