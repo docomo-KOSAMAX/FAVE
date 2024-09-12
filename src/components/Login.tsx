@@ -75,12 +75,21 @@ export default function App() {
       bgcolor="background.paper"
     >
 
-      <Typography variant="h4" gutterBottom>
-        KOSAMAX
+      <Typography
+        variant="h4"
+        gutterBottom
+        style={{
+          fontFamily: "'Montserrat', sans-serif",
+          letterSpacing: '2px',
+          fontWeight: 'bold',
+          textTransform: 'uppercase'
+        }}
+      >
+        FAVE
       </Typography>
       <img
         src="https://media.discordapp.net/attachments/968784586542829629/1283389160509407325/image.png?ex=66e2d0cc&is=66e17f4c&hm=9958737aacae580190375e2e7355abcda0b0fc442213b298e2501e554d4d7c2f&=&format=webp&quality=lossless&width=365&height=369"
-        alt="KOSAMAX"
+        alt="FAVE"
         width={200}
         height={200}
         style={{ borderRadius: '50%', marginBottom: '16px' }} // 画像を丸くするスタイル

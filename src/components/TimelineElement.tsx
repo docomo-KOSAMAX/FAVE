@@ -36,6 +36,7 @@ interface TimelineElementProps {
   onWatch: (id: number) => void;
   onLove: (id: number) => void;
   onNewListener: (id: number) => void;
+  onDelete?: (id: number) => void; // 削除ボタン用のオプション関数
 }
 
 // タイムライン要素コンポーネント
@@ -46,6 +47,7 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
   onWatch,
   onLove,
   onNewListener,
+  onDelete, // 削除ボタン用関数を追加
 }) => {
   if (error) {
     return (
@@ -82,6 +84,12 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
         <Button variant="outlined" size="small" onClick={() => onNewListener(post.id)}>
           🆕 リスナーになったよ！: {post.reactions.new_listener}
         </Button>
+        {/* 削除ボタン（関数が渡された場合のみ表示） */}
+        {onDelete && (
+          <Button variant="outlined" size="small" color="error" onClick={() => onDelete(post.id)}>
+            🗑️ 削除
+          </Button>
+        )}
       </Box>
     </Box>
   );
