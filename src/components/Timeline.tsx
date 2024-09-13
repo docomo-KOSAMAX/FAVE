@@ -324,11 +324,14 @@ export default function App() {
           onClose={handleClose}
           fullWidth
           maxWidth="sm"
+          fullScreen
           PaperProps={{
-            sx: { backgroundColor: 'transparent', boxShadow: 'none' },
+            sx: { backgroundColor: 'transparent', margin: 0, boxShadow: 'none' },
           }}
         >
-          <DialogContent>
+          <DialogContent
+            sx={{ padding: '2%' }} // パディングを無くすための設定
+          >
             <Post onClose={handleClose} handleUpdatePage={handleUpdatePage} />
           </DialogContent>
         </Dialog>

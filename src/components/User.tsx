@@ -300,17 +300,42 @@ color: #ffffff;
               </Typography>
             )}
             {mergedPosts.length === 0 ? ( // 投稿がない場合
-              <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    color: '#FFFFFF',
-                    mb: 2,
-                    textShadow: '0px 1px 12px rgba(255, 20, 147, 1)' // 垂直方向に影を配置
-                  }}
-                >
-                  まだ投稿がありません。まずは投稿してみましょう！
-                </Typography>
+                <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      textAlign: 'center',
+                      color: '#FFFFFF',
+                      textShadow: '0px 1px 12px rgba(255, 20, 147, 1)',
+                      mb: 2, mt: 4, display: 'inline' }} // 親要素はインライン表示
+                  >
+                    まだ投稿がありません。
+                    <span
+                      style={{
+                        display: 'inline',
+                        whiteSpace: 'nowrap',
+                        position: 'relative',
+                      }}
+                    >
+                      <span
+                        style={{
+                          display: 'none',
+                        }}
+                      >
+                        {/* | を表示する擬似要素 */}
+                        <span
+                          style={{
+                            display: 'none', // デフォルトは非表示
+                          }}
+                          className="separator"
+                        >
+                        </span>
+                      </span>
+                      まずは投稿してみましょう！
+                    </span>
+                  </Typography>
+
+
 
 
                 <Button
@@ -390,14 +415,18 @@ color: #ffffff;
           onClose={handleClose}
           fullWidth
           maxWidth="sm"
+          fullScreen
           PaperProps={{
-            sx: { backgroundColor: 'transparent', boxShadow: 'none' },
+            sx: { backgroundColor: 'transparent', margin: 0, boxShadow: 'none' },
           }}
         >
-          <DialogContent>
+          <DialogContent
+            sx={{ padding: '2%' }} // パディングを無くすための設定
+          >
             <Post onClose={handleClose} handleUpdatePage={handleUpdatePage} />
           </DialogContent>
         </Dialog>
+
         <Button
           variant="contained"
           color="secondary"
