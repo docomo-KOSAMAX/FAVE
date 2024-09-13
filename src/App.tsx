@@ -35,8 +35,8 @@ function App() {
     <ThemeProvider theme={theme}>
       <BrowserRouter basename={import.meta.env.DEV ? "/" : "/FAVE/"}>
         <Routes>
-          <Route path="/" element={<TimeLine />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/timeline" element={<TimeLine />} />
+          <Route path="/" element={<Login />} />
           <Route path="/post" element={<Post onClose={handleClose} handleUpdatePage={handleUpdatePage}/>} />
           <Route path="/user" element={<User />} />
         </Routes>

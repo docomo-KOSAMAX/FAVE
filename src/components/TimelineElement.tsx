@@ -1,16 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography, IconButton, Tooltip } from '@mui/material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DeleteIcon from '@mui/icons-material/Delete';
+import useInView from '../hooks/useInView'; // カスタムフックをインポート
 
-// 日付フォーマット変換関数
 const formatDateTime = (dateTimeString: string) => {
   const date = new Date(dateTimeString);
   const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月は0ベースなので+1
+  const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
@@ -18,7 +18,6 @@ const formatDateTime = (dateTimeString: string) => {
   return `${year}-${month}-${day} ${hours}:${minutes}`;
 };
 
-// タイムライン要素の型定義
 type Post = {
   id: number;
   message: string;
@@ -33,18 +32,16 @@ type Post = {
   };
 };
 
-// TimelineElementコンポーネントのプロパティ型定義
 interface TimelineElementProps {
   post: Post;
   error?: string | null;
-  onLike?: (id: number) => void; // optional に変更
-  onWatch?: (id: number) => void; // optional に変更
-  onLove?: (id: number) => void; // optional に変更
-  onNewListener?: (id: number) => void; // optional に変更
-  onDelete?: (id: number) => void; // 削除ボタン用のオプション関数
+  onLike?: (id: number) => void;
+  onWatch?: (id: number) => void;
+  onLove?: (id: number) => void;
+  onNewListener?: (id: number) => void;
+  onDelete?: (id: number) => void;
 }
 
-// タイムライン要素コンポーネント
 const TimelineElement: React.FC<TimelineElementProps> = ({
   post,
   error,
@@ -54,6 +51,13 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
   onNewListener,
   onDelete,
 }) => {
+  const { ref, isInView } = useInView(); // カスタムフックを使用
+
+  // isInViewの状態変化を監視し、デバッグ用のログを追加
+  useEffect(() => {
+    console.log('isInView changed:', isInView);
+  }, [isInView]);
+
   if (error) {
     return (
       <Typography color="error" variant="h6">
@@ -64,14 +68,18 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
 
   return (
     <Box
+      ref={ref}
       mb={3}
       p={2}
       borderRadius={2}
-      bgcolor="rgba(255, 255, 255, 0.7)" // 半透明の白い背景
+      bgcolor="rgba(255, 255, 255, 0.7)"
       position="relative"
       sx={{
-        backdropFilter: 'blur(10px)', // 背景のぼかし効果
-        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)', // 全方向に影を追加
+        backdropFilter: 'blur(10px)',
+        boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
+        opacity: isInView ? 1 : 0,
+        transform: isInView ? 'scale(1)' : 'scale(0.95)',
+        transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
       }}
     >
       {/* タイトルと投稿日を同じ行に配置 */}
@@ -80,11 +88,9 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
           {post.fave_name} <span style={{ fontSize: '0.75em' }}>推し</span>
         </Typography>
         <Box display="flex" alignItems="center">
-          {/* 投稿者と投稿日を表示 */}
           <Typography variant="body2" mr={1} color="text.secondary">
             {formatDateTime(post.date_time)}
           </Typography>
-          {/* 削除ボタン（関数が渡された場合のみ表示） */}
           {onDelete && (
             <IconButton
               color="error"
@@ -92,7 +98,7 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
               sx={{
                 transition: 'transform 0.2s ease-in-out',
                 '&:hover': {
-                  transform: 'scale(1.2)',
+                  transform: 'scale(1.1)',
                 },
               }}
             >
@@ -114,6 +120,10 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
             disabled={!onLike}
             size="small"
             sx={{
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
               '&:focus': {
                 outline: 'none',
               },
@@ -132,6 +142,10 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
             disabled={!onWatch}
             size="small"
             sx={{
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
               '&:focus': {
                 outline: 'none',
               },
@@ -150,6 +164,10 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
             disabled={!onLove}
             size="small"
             sx={{
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
               '&:focus': {
                 outline: 'none',
               },
@@ -168,6 +186,10 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
             disabled={!onNewListener}
             size="small"
             sx={{
+              transition: 'transform 0.2s ease-in-out',
+              '&:hover': {
+                transform: 'scale(1.1)',
+              },
               '&:focus': {
                 outline: 'none',
               },

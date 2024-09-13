@@ -35,11 +35,11 @@ export const Header = () => {
   const userName = searchParams.get("name");
   const pathname = useLocation().pathname;
 
-  const isTimeline = pathname === `/` && true;
+  const isTimeline = pathname === `/timeline/` && true;
   const isUserPage = pathname === `/user/` && true;
   const MoveToTimeline = () => {
     // console.log("timeline");
-    navigate(`/?name=${userName}`);
+    navigate(`/timeline/?name=${userName}`);
   };
 
   const MoveToUserPage = () => {
@@ -47,42 +47,44 @@ export const Header = () => {
     navigate(`/user/?name=${userName}`);
   };
   return (
-    // <HideOnScroll {...props}>
     <AppBar
       position="sticky"
       sx={{
-        background: "#EEEEEE",
-        // backgroundColor: "transparent",
-        borderRadius: "15px",
+        backgroundColor: 'rgba(255, 255, 255, 0.6)', // すりガラス風の白い背景
+        backdropFilter: 'blur(10px)', // 背景のぼかし効果
+        borderRadius: '0 0 15px 15px', // 上の角を丸くしない
+        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // 柔らかい影
+        overflow: 'hidden', // 丸みをボタンに適用するためにoverflowを隠す
       }}
     >
-      {/* <Box sx={{ textAlign: "center", background: "white", color: "blue" }}>
-        タイムライン
-      </Box> */}
       <Box
         sx={{
-          flexDirection: "row",
-          height: "80px",
-          background: "#EEEEEE",
-          // background: "white",
-          backgroundColor: "transparent",
-          // fontFamily: "fantasy",
-          boxShadow: "0",
-          // borderRadius: "15px",
+          display: 'flex', // Flexboxで横並び
+          flexDirection: 'row',
+          height: '60px', // ヘッダーの高さを小さく
         }}
       >
         <Button
           sx={{
-            fontSize: 30,
-            fontFamily: "inherit",
-            fontWeight: 900,
-            width: "50%",
-            height: "100%",
-            backgroundColor: "#EEEEEE",
-            color: "#9966FF",
-            // borderBlockColor: "red",
-            // borderRadius: "15px",
-            borderBottom: isTimeline ? 5 : 0,
+            fontSize: 20, // フォントサイズを少し小さく
+            fontFamily: 'inherit',
+            fontWeight: 700,
+            width: '50%',
+            height: '100%',
+            backgroundColor: isTimeline ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)', // ボタンのすりガラス風の背景
+            color: isTimeline ? '#9966FF' : 'rgba(100, 100, 100, 0.7)', // 選択されていない場合はグレーの色
+            borderBottom: isTimeline ? '4px solid #9966FF' : 'none',
+            boxShadow: 'none', // 一体化するために影を削除
+            borderRadius: '0', // ボタンの角丸を削除
+            outline: 'none', // 選択時の枠線を非表示
+            transition: 'background-color 0.3s, color 0.3s', // ホバー時のアニメーション（拡大を削除）
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.8)', // ホバー時に少し濃く
+              color: isTimeline ? '#9966FF' : '#666666', // ホバー時の文字色
+            },
+            '&:focus': {
+              outline: 'none', // フォーカス時も枠線を非表示
+            },
           }}
           onClick={MoveToTimeline}
         >
@@ -90,15 +92,25 @@ export const Header = () => {
         </Button>
         <Button
           sx={{
-            fontSize: 30,
-            fontFamily: "inherit",
-            fontWeight: 900,
-            height: "100%",
-            width: "50%",
-            backgroundColor: "#EEEEEE",
-            color: "#9966FF",
-            // borderRadius: "15px",
-            borderBottom: isUserPage ? 5 : 0,
+            fontSize: 20, // フォントサイズを少し小さく
+            fontFamily: 'inherit',
+            fontWeight: 700,
+            width: '50%',
+            height: '100%',
+            backgroundColor: isUserPage ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.4)', // ボタンのすりガラス風の背景
+            color: isUserPage ? '#9966FF' : 'rgba(100, 100, 100, 0.7)', // 選択されていない場合はグレーの色
+            borderBottom: isUserPage ? '4px solid #9966FF' : 'none',
+            boxShadow: 'none', // 一体化するために影を削除
+            borderRadius: '0', // ボタンの角丸を削除
+            outline: 'none', // 選択時の枠線を非表示
+            transition: 'background-color 0.3s, color 0.3s', // ホバー時のアニメーション（拡大を削除）
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.8)', // ホバー時に少し濃く
+              color: isUserPage ? '#9966FF' : '#666666', // ホバー時の文字色
+            },
+            '&:focus': {
+              outline: 'none', // フォーカス時も枠線を非表示
+            },
           }}
           onClick={MoveToUserPage}
         >
@@ -106,6 +118,6 @@ export const Header = () => {
         </Button>
       </Box>
     </AppBar>
-    // </HideOnScroll>
+
   );
 };
