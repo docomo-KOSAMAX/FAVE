@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Typography, IconButton, Tooltip } from '@mui/material';
 import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -53,6 +53,11 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
 }) => {
   const { ref, isInView } = useInView(); // カスタムフックを使用
 
+  // isInViewの状態変化を監視し、デバッグ用のログを追加
+  useEffect(() => {
+    console.log('isInView changed:', isInView);
+  }, [isInView]);
+
   if (error) {
     return (
       <Typography color="error" variant="h6">
@@ -74,7 +79,7 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
         boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
         opacity: isInView ? 1 : 0,
         transform: isInView ? 'scale(1)' : 'scale(0.95)',
-        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
+        transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
       }}
     >
       {/* タイトルと投稿日を同じ行に配置 */}
