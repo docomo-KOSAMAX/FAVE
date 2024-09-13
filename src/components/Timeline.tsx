@@ -213,11 +213,63 @@ export default function App() {
       <Box mt={2}>
         {loading ? ( // ローディング中の表示
           <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-            <CircularProgress /> {/* ローディングスピナーを表示 */}
-            <Typography variant="h6" mt={2}>
+            {/* 4つの丸のローディング */}
+            <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+              {[0, 1, 2, 3].map((index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: '7px',
+                    height: '7px',
+                    backgroundColor: '#ffffff', // 丸の色を白に
+                    borderRadius: '50%',
+                    animation: 'bounce 0.4s infinite ease-in-out',
+                    animationDelay: `${index * 0.1}s`, // 各丸のアニメーションの遅延時間を設定
+                    boxShadow: '0px 1px 8px rgba(255, 20, 147, 0.6)', // 赤紫色の影を追加
+                  }}
+                />
+              ))}
+            </Box>
+            {/* CSSアニメーション */}
+            <style>
+              {`
+      @keyframes bounce {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.5);
+        }
+      }
+      
+      @keyframes pulse {
+        0%, 100% {
+          transform: scale(1);
+          color: #ffffff; // 白色
+        }
+        50% {
+          transform: scale(1.1);
+          color: #ffffff; // 白色
+        }
+      }
+    `}
+            </style>
+            {/* モダンで可愛いローディングメッセージ */}
+            <Typography
+              variant="h6"
+              mt={2}
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '1.2rem',
+                color: '#ffffff', // 文字色を白に変更
+                animation: 'pulse 1s infinite ease-in-out', // パルスアニメーション
+                textShadow: '0px 1px 8px rgba(255, 20, 147, 0.6)', // 赤紫色の影
+              }}
+            >
               ローディング中...
             </Typography>
           </Box>
+
         ) : (
           <>
             {error && (

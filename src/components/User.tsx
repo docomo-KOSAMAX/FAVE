@@ -217,7 +217,7 @@ export default function User() {
       <Header></Header>
       <Box mt={2} mb={2} textAlign="center">
         <Typography
-          variant="h5"
+          variant="h6"
           align="center"
           sx={{
             backgroundColor: 'rgba(255, 255, 255, 0.8)', // 背景色を白に設定（透明度を調整）
@@ -237,8 +237,59 @@ export default function User() {
       <Box mt={2}>
         {loading ? ( // ローディング中の表示
           <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-            <CircularProgress /> {/* ローディングスピナーを表示 */}
-            <Typography variant="h6" mt={2}>
+            {/* 4つの丸のローディング */}
+            <Box display="flex" justifyContent="center" alignItems="center" gap={1}>
+              {[0, 1, 2, 3].map((index) => (
+                <Box
+                  key={index}
+                  sx={{
+                    width: '7px',
+                    height: '7px',
+                    backgroundColor: '#ffffff',
+                    borderRadius: '50%',
+                    animation: 'bounce 0.4s infinite ease-in-out',
+                    animationDelay: `${index * 0.1}s`,
+                    boxShadow: '2px 2px 8px rgba(255, 20, 147, 0.5)',
+                  }}
+                />
+              ))}
+            </Box>
+            {/* CSSアニメーション */}
+            <style>
+              {`
+@keyframes bounce {
+0%, 100% {
+transform: scale(1);
+}
+50% {
+transform: scale(1.5);
+}
+}
+
+@keyframes pulse {
+0%, 100% {
+transform: scale(1);
+color: #ffffff;
+}
+50% {
+transform: scale(1.1);
+color: #ffffff;
+}
+}
+`}
+            </style>
+            {/* モダンで可愛いローディングメッセージ */}
+            <Typography
+              variant="h6"
+              mt={2}
+              sx={{
+                fontWeight: 'bold',
+                fontSize: '1.2rem',
+                color: '#ffffff',
+                animation: 'pulse 1s infinite ease-in-out',
+                textShadow: '0px 1px 12px rgba(255, 20, 147, 1)',
+              }}
+            >
               ローディング中...
             </Typography>
           </Box>
@@ -249,16 +300,57 @@ export default function User() {
                 {error}
               </Typography>
             )}
-            {mergedPosts.map((post) => (
-              <TimelineElement
-                key={post.id}
-                post={post}
-                onDelete={handleDelete} // 削除ハンドラを追加
-              />
-            ))}
+            {mergedPosts.length === 0 ? ( // 投稿がない場合
+              <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      color: '#FFFFFF',
+                      mb: 2,
+                      textShadow: '0px 1px 12px rgba(255, 20, 147, 1)' // 垂直方向に影を配置
+                    }}
+                  >
+                    まだ投稿がありません。まずは投稿してみましょう！
+                  </Typography>
+
+
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleOpen}
+                  sx={{
+                    background: 'linear-gradient(135deg, #6C63FF 0%, #48A9FE 100%)',
+                    color: '#FFFFFF',
+                    fontWeight: 'bold',
+                    borderRadius: '24px',
+                    padding: '10px 24px',
+                    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+                    outline: 'none',
+                    '&:focus': {
+                      outline: 'none',
+                    },
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #5A55E0 0%, #3C99DC 100%)',
+                      boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
+                    },
+                  }}
+                >
+                  投稿する
+                </Button>
+              </Box>
+            ) : (
+              mergedPosts.map((post) => (
+                <TimelineElement
+                  key={post.id}
+                  post={post}
+                  onDelete={handleDelete}
+                />
+              ))
+            )}
           </>
         )}
       </Box>
+
 
       {/* 画面右下に固定されたボタン */}
       <Box
