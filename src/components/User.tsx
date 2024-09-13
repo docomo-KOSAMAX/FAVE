@@ -109,107 +109,106 @@ export default function User() {
   useEffect(() => {
     if (userName) {
       setLoading(true); // データ取得前にローディングを開始
-      fetch(
-        `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}`
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("投稿データの取得に失敗しました");
-          }
-          return response.json();
-        })
-        .then((data: FavePost[]) => {
-          setPosts(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching posts:", error);
-          const dummyData: FavePost[] = [
-            {
-              id: 1,
-              message: "推しの歌声が毎日の活力！この曲を聴くと元気が出ます！",
-              fave_id: 1,
-              date_time: "2024-09-11 10:00",
-              post_by: userName || "",
-              reactions: {
-                like: 5,
-                watch: 10,
-                love: 3,
-                new_listener: 1,
+
+      // APIから投稿データと推し情報を取得
+      Promise.all([
+        fetch(
+          `https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/favePosts/${userName}`
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("投稿データの取得に失敗しました");
+            }
+            return response.json();
+          })
+          .catch((error) => {
+            console.error("Error fetching posts:", error);
+            // 取得に失敗した場合はダミーデータを使用
+            const dummyData: FavePost[] = [
+              {
+                id: 1,
+                message: "これはダミーデータの投稿です。",
+                fave_id: 1,
+                date_time: "2024-09-11 10:00",
+                post_by: userName,
+                reactions: {
+                  like: 5,
+                  watch: 10,
+                  love: 3,
+                  new_listener: 1,
+                },
               },
-            },
-            {
-              id: 2,
-              message: "推しのゲーム実況、本当に面白い！もっとたくさん見たい！",
-              fave_id: 2,
-              date_time: "2024-09-12 12:00",
-              post_by: userName || "",
-              reactions: {
-                like: 8,
-                watch: 15,
-                love: 6,
-                new_listener: 2,
+              {
+                id: 2,
+                message: "こちらもダミーデータの投稿です。",
+                fave_id: 2,
+                date_time: "2024-09-12 12:00",
+                post_by: userName,
+                reactions: {
+                  like: 8,
+                  watch: 15,
+                  love: 6,
+                  new_listener: 2,
+                },
               },
-            },
-          ];
-          setPosts(dummyData);
-          setError(
-            "投稿データの取得に失敗しました。ダミーデータを表示しています。"
-          );
+            ];
+            setError(
+              "投稿データの取得に失敗しました。ダミーデータを表示しています。"
+            );
+            return dummyData;
+          }),
+
+        fetch(
+          "https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves"
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("推し情報の取得に失敗しました");
+            }
+            return response.json();
+          })
+          .catch((error) => {
+            console.error("Error fetching faves:", error);
+            // 取得に失敗した場合はダミーデータを使用
+            const faveData: Fave[] = [
+              {
+                id: 1,
+                fave_name: "赤身かるび",
+              },
+              {
+                id: 2,
+                fave_name: "琵琶湖くん",
+              },
+            ];
+            setError(
+              "推し情報の取得に失敗しました。ダミーデータを使用しています。"
+            );
+            return faveData;
+          }),
+      ])
+        .then(([postsData, favesData]: [FavePost[], Fave[]]) => {
+          setPosts(postsData);
+          setFaves(favesData);
+
+          // postsとfavesのデータをマージ
+          const merged = postsData.map((post: FavePost) => {
+            const matchedFave = favesData.find((fave: Fave) => fave.id === post.fave_id);
+            return {
+              ...post,
+              fave_name: matchedFave ? matchedFave.fave_name : "不明な推し",
+            };
+          });
+
+          setMergedPosts(merged); // マージされた結果をステートに設定
+          setError(null);
         })
         .finally(() => setLoading(false)); // データ取得後にローディングを終了
-
-      fetch(
-        "https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/faves"
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("推し情報の取得に失敗しました");
-          }
-          return response.json();
-        })
-        .then((data: Fave[]) => {
-          setFaves(data);
-        })
-        .catch((error) => {
-          console.error("Error fetching faves:", error);
-          const faveData: Fave[] = [
-            {
-              id: 1,
-              fave_name: "サンプル1",
-            },
-            {
-              id: 2,
-              fave_name: "サンプル2",
-            },
-          ];
-          setFaves(faveData);
-          setError(
-            "推し情報の取得に失敗しました。ダミーデータを使用しています。"
-          );
-        });
     } else {
       setError("ユーザー名が指定されていません。");
       setLoading(false); // エラーの場合にもローディングを終了
     }
   }, [userName, reloadCount]);
 
-  // 投稿と推し情報をマージしてfave_nameを追加
-  useEffect(() => {
-    if (posts.length > 0 && faves.length > 0) {
-      const merged = posts.map((post) => {
-        console.log(post.fave_id);
-        const matchedFave = faves.find(
-          (fave) => Number(fave.id) === Number(post.fave_id)
-        );
-        return {
-          ...post,
-          fave_name: matchedFave ? matchedFave.fave_name : "不明な推し",
-        };
-      });
-
-      setMergedPosts(merged);
-    }
-  }, [posts, faves]);
 
   return (
     <div>
