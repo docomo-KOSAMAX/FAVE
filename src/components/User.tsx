@@ -275,6 +275,22 @@ export default function User() {
           variant="contained"
           color="primary"
           onClick={handleOpen}
+          sx={{
+            background: 'linear-gradient(135deg, #6C63FF 0%, #48A9FE 100%)',
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            borderRadius: '24px',
+            padding: '10px 24px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+            outline: 'none', // 黒い枠を防ぐ
+            '&:focus': {
+              outline: 'none', // フォーカス時も黒い枠を防ぐ
+            },
+            '&:hover': {
+              background: 'linear-gradient(135deg, #5A55E0 0%, #3C99DC 100%)',
+              boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
+            },
+          }}
         >
           投稿する
         </Button>
@@ -286,15 +302,31 @@ export default function User() {
           PaperProps={{
             sx: { backgroundColor: 'transparent', boxShadow: 'none' },
           }}
-          >
+        >
         <DialogContent>
           <Post onClose={handleClose} handleUpdatePage={handleUpdatePage}/>
         </DialogContent>
         </Dialog>
         <Button
           variant="contained"
-          // color=""
+          color="secondary"
           onClick={handleUpdatePage}
+          sx={{
+            backgroundColor: '#FF4081',
+            color: '#FFFFFF',
+            fontWeight: 'bold',
+            borderRadius: '24px',
+            padding: '10px 24px',
+            boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+            outline: 'none', // 黒い枠を防ぐ
+            '&:focus': {
+              outline: 'none', // フォーカス時も黒い枠を防ぐ
+            },
+            '&:hover': {
+              backgroundColor: '#F50057',
+              boxShadow: '0px 6px 16px rgba(0, 0, 0, 0.2)',
+            },
+          }}
         >
           更新する
         </Button>
