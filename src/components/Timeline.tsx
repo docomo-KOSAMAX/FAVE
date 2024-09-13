@@ -269,13 +269,6 @@ export default function App() {
         </Dialog>
         <Button
           variant="contained"
-          color="secondary"
-          onClick={handleNavigateToTimeline}
-        >
-          ユーザーページへ
-        </Button>
-        <Button
-          variant="contained"
           // color=""
           onClick={handleUpdatePage}
         >

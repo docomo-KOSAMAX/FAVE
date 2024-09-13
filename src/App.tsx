@@ -25,6 +25,11 @@ function App() {
     console.log("Post component closed");
     // 必要ならここにモーダルを閉じるなどの処理を実装
   };
+
+  // handleUpdatePageのダミー実装
+  const handleUpdatePage = () => {
+    console.log("handleUpdatePage")
+  }
   
   return (
     <ThemeProvider theme={theme}>
@@ -32,7 +37,7 @@ function App() {
         <Routes>
           <Route path="/" element={<TimeLine />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/post" element={<Post onClose={handleClose} />} />
+          <Route path="/post" element={<Post onClose={handleClose} handleUpdatePage={handleUpdatePage}/>} />
           <Route path="/user" element={<User />} />
         </Routes>
       </BrowserRouter>
