@@ -9,6 +9,7 @@ import Post from './Post'; // Postコンポーネントをインポート
 export default function User() {
   const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
   const [faves, setFaves] = useState<Fave[]>([]); // 推し情報を管理するためのステート
+  const [reloadCount, setReloadCount] = useState(0);
   const [mergedPosts, setMergedPosts] = useState<
     (FavePost & { fave_name: string })[]
   >([]); // マージしたデータを保持するためのステート
@@ -33,6 +34,10 @@ export default function User() {
   // タイムラインボタンをクリックしたときに呼び出される関数
   const handleNavigateToTimeline = () => {
     navigate(`/?name=${userName}`);
+  };
+  const handleUpdatePage = () => {
+    // window.location.reload();
+    setReloadCount(reloadCount + 1);
   };
 
   // リアクションボタンのクリックハンドラ
@@ -186,7 +191,7 @@ export default function User() {
       setError("ユーザー名が指定されていません。");
       setLoading(false); // エラーの場合にもローディングを終了
     }
-  }, [userName]);
+  }, [userName, reloadCount]);
 
   // 投稿と推し情報をマージしてfave_nameを追加
   useEffect(() => {
@@ -283,7 +288,7 @@ export default function User() {
           }}
           >
         <DialogContent>
-          <Post onClose={handleClose} />
+          <Post onClose={handleClose} handleUpdatePage={handleUpdatePage}/>
         </DialogContent>
         </Dialog>
         <Button
@@ -292,6 +297,13 @@ export default function User() {
           onClick={handleNavigateToTimeline}
         >
           タイムライン画面へ
+        </Button>
+        <Button
+          variant="contained"
+          // color=""
+          onClick={handleUpdatePage}
+        >
+          更新する
         </Button>
       </Box>
     </div>
