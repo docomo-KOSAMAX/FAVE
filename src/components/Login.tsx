@@ -50,6 +50,9 @@ export default function Login() {
           console.error('【Error logging in】:', error);
           setError('ログインに失敗しました。ユーザー名を確認してください。');
         });
+    } else {
+      setError('ユーザー名を入力してください。'); // ユーザー名が空の場合にエラーメッセージを設定
+      return; // 処理を終了
     }
   };
 
@@ -128,9 +131,30 @@ export default function Login() {
             {error}
           </Typography>
         )}
-        <Button className={classes.root} variant="contained" onClick={handleLogin} fullWidth>
+        <Button
+          variant="contained"
+          onClick={handleLogin}
+          fullWidth
+          sx={{
+            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            color: 'white',
+            fontWeight: 'bold',
+            padding: '12px 24px',
+            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+            outline: 'none', // 黒い枠を防ぐ
+            '&:focus': {
+              outline: 'none', // フォーカス時も黒い枠を防ぐ
+              boxShadow: 'none', // フォーカス時の影を消す
+            },
+            '&:hover': {
+              background: 'linear-gradient(45deg, #FE6B8B 40%, #FF8E53 100%)',
+              boxShadow: '0 4px 8px 2px rgba(255, 105, 135, .4)',
+            },
+          }}
+        >
           ログイン または サインアップ
         </Button>
+
 
         {/* クレジットを一貫したスタイルで表示 */}
         <Typography
