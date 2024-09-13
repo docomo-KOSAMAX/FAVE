@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { Box, TextField, Button, Typography, useTheme, useMediaQuery } from '@mui/material'; // useMediaQueryをインポート
 import { makeStyles } from '@mui/styles';
 import faveLogo from '../assets/fave.svg';
+import lightModeImage from '../assets/light.jpg';
+import darkModeImage from '../assets/dark.png';
 
 const useStyles = makeStyles({
   root: {
@@ -58,8 +60,8 @@ export default function Login() {
   };
 
   // ライトモードとダークモードで異なる画像のURLを設定
-  const lightModeImageUrl = 'https://media.discordapp.net/attachments/968784586542829629/1283740202304798721/Firefly_logo_web_app_anime_vtuber_96844.jpg?ex=66e417ba&is=66e2c63a&hm=84c3e92b442163058740fb63603d38d27b824479a63e7f736303451f99aa285a&=&format=webp&width=675&height=689';
-  const darkModeImageUrl = 'https://media.discordapp.net/attachments/968784586542829629/1283389160509407325/image.png?ex=66e3798c&is=66e2280c&hm=f216c00acf9c02f0e8bda5bca26d9090448678448a61b0ba87c3752796159906&=&format=webp&quality=lossless&width=365&height=369';
+  const lightModeImageUrl = '../assets/light.jpg';
+  const darkModeImageUrl = '../assets/dark.jpg';
 
   return (
     <Box
@@ -95,7 +97,7 @@ export default function Login() {
         />
 
         <img
-          src={prefersDarkMode ? darkModeImageUrl : lightModeImageUrl} // prefersDarkModeに基づいて画像を切り替える
+          src={prefersDarkMode ? darkModeImage : lightModeImage} // prefersDarkModeに基づいて画像を切り替える
           alt="FAVE"
           width={200}
           height={200}
