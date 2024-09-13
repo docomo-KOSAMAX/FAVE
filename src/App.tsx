@@ -33,7 +33,7 @@ function App() {
   
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter basename={import.meta.env.DEV ? "/" : "/VtuberFukyou/"}>
+      <BrowserRouter basename={import.meta.env.DEV ? "/" : "/FAVE/"}>
         <Routes>
           <Route path="/" element={<TimeLine />} />
           <Route path="/login" element={<Login />} />
