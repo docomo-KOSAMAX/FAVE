@@ -1,50 +1,26 @@
-# React + TypeScript + Vite
+# 布教特化型Vtuberコミュニティ「FAVE」
+[ドコモハッカソン](https://information.nttdocomo-fresh.jp/event/hackathon/)\(2024/9/10-2024/9/13\) 最優秀賞
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+### 布教特化型プラットフォーム
+私たちのプラットフォームでは、以下の特徴を持つサービスを提供します：
 
-Currently, two official plugins are available:
+- **推しを推し合う**：ファン同士でVtuberの魅力を相互に共有。
+- **匿名投稿**：投稿者の情報よりも、「誰推し」であるかを重要視。
+- **豊富なレスポンス**：布教活動の成功を実感できるシステム。
+- **推しポイントの共有**：同じ趣味を持つファン同士がつながる場所を提供。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 技術スタック
 
-## Expanding the ESLint configuration
+### フロントエンド
+- **React (TypeScript)**: 表示コメント・ヘッダーをコンポーネント化し、複数ページで再利用。
+- **Material UI**: モダンでTwitterライクなデザイン。
+- **React Router**: ページごとのルーティング。
+- **Git・GitHub**: GitHub Actionsを利用して、自動デプロイ。
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### バックエンド
+- **AWS**: Lambda, API Gateway, bedrock, EventBridge, Aurora Serverless
+- **Python**: サーバーサイドロジックの実装。
+- **PostgreSQL**: データベース。
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+## 制作
+チーム KOSAMAX
