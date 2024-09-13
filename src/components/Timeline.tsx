@@ -264,7 +264,7 @@ export default function App() {
           }}
           >
           <DialogContent>
-            <Post onClose={handleClose} />
+            <Post onClose={handleClose} handleUpdatePage={handleUpdatePage} />
           </DialogContent>
         </Dialog>
         <Button

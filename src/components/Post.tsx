@@ -13,9 +13,10 @@ const StyledTextField = styled(TextField)(({ theme }) => ({
 
 interface PostProps {
   onClose: () => void; // onClose 関数をプロップスとして受け取る
+  handleUpdatePage: () => void; // handleUpdatePage 関数をプロップスとして受け取る
 }
 
-const App: React.FC<PostProps> = ({ onClose }) => {
+const App: React.FC<PostProps> = ({ onClose, handleUpdatePage}) => {
   const navigate = useNavigate();
   const [newPost, setnewPost] = useState<string>(""); //投稿ボックスに入力された文字列を保持
   const [searchParams] = useSearchParams();
@@ -94,6 +95,7 @@ const api = axios.create({
           // ステータスコードが200ならタイムラインに遷移
           alert('投稿しました。');
           onClose();
+          handleUpdatePage();
         } else if (response.status === 202) {
           // ステータスコードが202ならエラーメッセージを表示
           setErrorMessage("ユーザ名が登録されていません。");
@@ -131,7 +133,7 @@ const api = axios.create({
 
 
   return (
-      <Box sx={{ padding: 10, maxWidth: '1000px', margin: '0 auto', boxShadow: 20,  backgroundColor: '#ffffff', borderRadius: '30px' }}>
+      <Box sx={{ padding: 10, maxWidth: '1000px', margin: '0 auto', boxShadow: 20,  backgroundColor: 'rgba(255, 255, 255, 0.9)', backdropFilter: 'blur(10px)', borderRadius: '30px' }}>
         {/* 投稿フォームの上部にプロフィール画像を表示 */}
         <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
           {/* ボックス上に文字を表示 */}
