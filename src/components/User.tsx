@@ -293,13 +293,6 @@ export default function User() {
         </Dialog>
         <Button
           variant="contained"
-          color="secondary"
-          onClick={handleNavigateToTimeline}
-        >
-          タイムライン画面へ
-        </Button>
-        <Button
-          variant="contained"
           // color=""
           onClick={handleUpdatePage}
         >
