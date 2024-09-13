@@ -42,7 +42,7 @@ export default function Login() {
           return response.json();
         })
         .then(() => {
-          navigate(`/?name=${username}`);
+          navigate(`/timeline/?name=${username}`);
         })
         .catch((error) => {
           console.error('【Error logging in】:', error);

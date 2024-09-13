@@ -35,11 +35,11 @@ export const Header = () => {
   const userName = searchParams.get("name");
   const pathname = useLocation().pathname;
 
-  const isTimeline = pathname === `/` && true;
+  const isTimeline = pathname === `/timeline/` && true;
   const isUserPage = pathname === `/user/` && true;
   const MoveToTimeline = () => {
     // console.log("timeline");
-    navigate(`/?name=${userName}`);
+    navigate(`/timeline/?name=${userName}`);
   };
 
   const MoveToUserPage = () => {
