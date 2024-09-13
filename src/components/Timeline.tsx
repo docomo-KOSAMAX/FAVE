@@ -45,8 +45,8 @@ export default function App() {
     navigate(`/user/?name=${userName}`);
   };
   const handleUpdatePage = () => {
-    // window.location.reload();
-    setReloadCount(reloadCount + 1);
+    window.location.reload();
+    //setReloadCount(reloadCount + 1);
   };
 
   // リアクションボタンのクリックハンドラ
@@ -285,7 +285,6 @@ export default function App() {
                 onWatch={handleWatch}
                 onLove={handleLove}
                 onNewListener={handleNewListener}
-                // onDelete={handleDelete} // 削除ハンドラを追加
               />
             ))}
           </>

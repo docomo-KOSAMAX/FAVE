@@ -67,12 +67,12 @@ export default function User() {
       prevPosts.map((post) =>
         post.id === id
           ? {
-              ...post,
-              reactions: {
-                ...post.reactions,
-                [type]: post.reactions[type as keyof FavePost["reactions"]] + 1, // 指定したリアクションの数値を加算
-              },
-            }
+            ...post,
+            reactions: {
+              ...post.reactions,
+              [type]: post.reactions[type as keyof FavePost["reactions"]] + 1, // 指定したリアクションの数値を加算
+            },
+          }
           : post
       )
     );
@@ -302,16 +302,16 @@ color: #ffffff;
             )}
             {mergedPosts.length === 0 ? ( // 投稿がない場合
               <Box display="flex" flexDirection="column" alignItems="center" mt={4}>
-                  <Typography
-                    variant="h6"
-                    sx={{
-                      color: '#FFFFFF',
-                      mb: 2,
-                      textShadow: '0px 1px 12px rgba(255, 20, 147, 1)' // 垂直方向に影を配置
-                    }}
-                  >
-                    まだ投稿がありません。まずは投稿してみましょう！
-                  </Typography>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    color: '#FFFFFF',
+                    mb: 2,
+                    textShadow: '0px 1px 12px rgba(255, 20, 147, 1)' // 垂直方向に影を配置
+                  }}
+                >
+                  まだ投稿がありません。まずは投稿してみましょう！
+                </Typography>
 
 
                 <Button
@@ -395,9 +395,9 @@ color: #ffffff;
             sx: { backgroundColor: 'transparent', boxShadow: 'none' },
           }}
         >
-        <DialogContent>
-          <Post onClose={handleClose} handleUpdatePage={handleUpdatePage}/>
-        </DialogContent>
+          <DialogContent>
+            <Post onClose={handleClose} handleUpdatePage={handleUpdatePage} />
+          </DialogContent>
         </Dialog>
         <Button
           variant="contained"
