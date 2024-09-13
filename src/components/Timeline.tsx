@@ -12,6 +12,7 @@ import TimelineElement from "./TimelineElement"; // コンポーネントのイ�
 import { FavePost, Fave } from "../types/index"; // 型のインポート
 import { Header } from "./Header";
 import Post from "./Post"; // Postコンポーネントをインポート
+import { Footer } from "./Footer";
 
 export default function App() {
   const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
@@ -241,47 +242,7 @@ export default function App() {
       </Box>
 
       {/* 画面右下に固定されたボタン */}
-      <Box
-        style={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-          display: "flex",
-          flexDirection: "row",
-          gap: "8px",
-        }}
-      >
-        <Button variant="contained" color="primary" onClick={handleOpen}>
-          投稿する
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          fullWidth
-          maxWidth="sm"
-          PaperProps={{
-            sx: { backgroundColor: 'transparent', boxShadow: 'none' },
-          }}
-          >
-          <DialogContent>
-            <Post onClose={handleClose} handleUpdatePage={handleUpdatePage} />
-          </DialogContent>
-        </Dialog>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleNavigateToTimeline}
-        >
-          ユーザーページへ
-        </Button>
-        <Button
-          variant="contained"
-          // color=""
-          onClick={handleUpdatePage}
-        >
-          更新する
-        </Button>
-      </Box>
+      <Footer></Footer>
     </div>
   );
 }

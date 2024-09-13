@@ -48,7 +48,14 @@ export const Header = () => {
   };
   return (
     // <HideOnScroll {...props}>
-    <AppBar position="sticky">
+    <AppBar
+      position="sticky"
+      sx={{
+        background: "#EEEEEE",
+        // backgroundColor: "transparent",
+        borderRadius: "15px",
+      }}
+    >
       {/* <Box sx={{ textAlign: "center", background: "white", color: "blue" }}>
         タイムライン
       </Box> */}
@@ -56,7 +63,12 @@ export const Header = () => {
         sx={{
           flexDirection: "row",
           height: "80px",
+          background: "#EEEEEE",
+          // background: "white",
+          backgroundColor: "transparent",
           // fontFamily: "fantasy",
+          boxShadow: "0",
+          // borderRadius: "15px",
         }}
       >
         <Button
@@ -68,7 +80,8 @@ export const Header = () => {
             height: "100%",
             backgroundColor: "#EEEEEE",
             color: "#9966FF",
-            borderBlockColor: "red",
+            // borderBlockColor: "red",
+            // borderRadius: "15px",
             borderBottom: isTimeline ? 5 : 0,
           }}
           onClick={MoveToTimeline}
@@ -84,6 +97,7 @@ export const Header = () => {
             width: "50%",
             backgroundColor: "#EEEEEE",
             color: "#9966FF",
+            // borderRadius: "15px",
             borderBottom: isUserPage ? 5 : 0,
           }}
           onClick={MoveToUserPage}

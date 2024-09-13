@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
-import { Button, Box, Typography, CircularProgress, Dialog, DialogContent } from "@mui/material"; // CircularProgressをインポート
+import {
+  Button,
+  Box,
+  Typography,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+} from "@mui/material"; // CircularProgressをインポート
 import { useNavigate, useSearchParams } from "react-router-dom";
 import TimelineElement from "./TimelineElement"; // コンポーネントのインポート
 import { FavePost, Fave } from "../types/index"; // 型のインポート
 import { Header } from "./Header";
-import Post from './Post'; // Postコンポーネントをインポート
+import Post from "./Post"; // Postコンポーネントをインポート
+import { Footer } from "./Footer";
 
 export default function User() {
   const [posts, setPosts] = useState<FavePost[]>([]); // 投稿を管理するためのステート
@@ -215,18 +223,18 @@ export default function User() {
           variant="h5"
           align="center"
           sx={{
-            backgroundColor: 'rgba(255, 255, 255, 0.8)', // 背景色を白に設定（透明度を調整）
-            backdropFilter: 'blur(10px)', // 背景のぼかし効果
-            boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)', // 全方向に影を追加
-            display: 'inline-block', // 背景色がテキストにフィットするように設定
-            padding: '8px 16px', // パディングを追加して余白を作成
-            borderRadius: '8px', // 角を丸める
+            backgroundColor: "rgba(255, 255, 255, 0.8)", // 背景色を白に設定（透明度を調整）
+            backdropFilter: "blur(10px)", // 背景のぼかし効果
+            boxShadow:
+              "0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)", // 全方向に影を追加
+            display: "inline-block", // 背景色がテキストにフィットするように設定
+            padding: "8px 16px", // パディングを追加して余白を作成
+            borderRadius: "8px", // 角を丸める
           }}
         >
           あなた({userName})の投稿です
         </Typography>
       </Box>
-
 
       {/* 投稿を表示するセクション */}
       <Box mt={2}>
@@ -255,45 +263,7 @@ export default function User() {
         )}
       </Box>
 
-      {/* 画面右下に固定されたボタン */}
-      <Box
-        style={{
-          position: "fixed",
-          bottom: 16,
-          right: 16,
-          display: "flex",
-          flexDirection: "row",
-          gap: "8px",
-        }}
-      >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleOpen}
-        >
-          投稿する
-        </Button>
-        <Dialog
-          open={open}
-          onClose={handleClose}
-          fullWidth
-          maxWidth="sm"
-          PaperProps={{
-            sx: { backgroundColor: 'transparent', boxShadow: 'none' },
-          }}
-          >
-        <DialogContent>
-          <Post onClose={handleClose} />
-        </DialogContent>
-        </Dialog>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={handleNavigateToTimeline}
-        >
-          タイムライン画面へ
-        </Button>
-      </Box>
+      <Footer></Footer>
     </div>
   );
 }
