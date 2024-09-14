@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Box, TextField, Button, Typography, useTheme, useMediaQuery } from '@mui/material'; // useMediaQueryをインポート
+import { Box, TextField, Button, Typography, useTheme, useMediaQuery } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import faveLogo from '../assets/fave.svg';
 import lightModeImage from '../assets/light.jpg';
@@ -24,13 +24,15 @@ export default function Login() {
   const theme = useTheme();
   const [username, setUsername] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false); // Loading state
   const navigate = useNavigate();
 
-  // ダークモードかどうかをチェック
+  // Check if dark mode is preferred
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const handleLogin = () => {
     if (username) {
+      setLoading(true); // Start loading
       fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/users/${username}`, {
         method: 'POST',
       })
@@ -49,10 +51,12 @@ export default function Login() {
         .catch((error) => {
           console.error('【Error logging in】:', error);
           setError('ログインに失敗しました。ユーザー名を確認してください。');
+        })
+        .finally(() => {
+          setLoading(false); // Stop loading
         });
     } else {
-      setError('ユーザー名を入力してください。'); // ユーザー名が空の場合にエラーメッセージを設定
-      return; // 処理を終了
+      setError('ユーザー名を入力してください。');
     }
   };
 
@@ -61,10 +65,6 @@ export default function Login() {
       handleLogin();
     }
   };
-
-  // ライトモードとダークモードで異なる画像のURLを設定
-  const lightModeImageUrl = '../assets/light.jpg';
-  const darkModeImageUrl = '../assets/dark.jpg';
 
   return (
     <Box
@@ -87,12 +87,11 @@ export default function Login() {
         sx={{
           backdropFilter: 'blur(10px)',
           boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
-          maxHeight: '90vh', // 最大の高さを設定して伸びすぎを防ぐ
-          overflowY: 'auto', // 内容が多すぎる場合はスクロールを表示,
-          borderRadius: 2, // 角丸の設定を追加
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          borderRadius: 2,
         }}
       >
-        {/* SVG画像の表示 */}
         <img
           src={faveLogo}
           alt="FAVE Logo"
@@ -100,7 +99,7 @@ export default function Login() {
         />
 
         <img
-          src={prefersDarkMode ? darkModeImage : lightModeImage} // prefersDarkModeに基づいて画像を切り替える
+          src={prefersDarkMode ? darkModeImage : lightModeImage}
           alt="FAVE"
           width={200}
           height={200}
@@ -108,11 +107,11 @@ export default function Login() {
         />
 
         <Typography
-          variant="h6" // h6相当のスタイルに設定
+          variant="h6"
           gutterBottom
           sx={{
             textAlign: 'center',
-            marginLeft: '8px', // 文字を少し右にずらす
+            marginLeft: '8px',
           }}
         >
           推しを推し合う。
@@ -135,95 +134,27 @@ export default function Login() {
           variant="contained"
           onClick={handleLogin}
           fullWidth
+          disabled={loading} // Disable button while loading
           sx={{
-            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+            background: loading ? '#CCC' : 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
             color: 'white',
             fontWeight: 'bold',
             padding: '12px 24px',
             boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-            outline: 'none', // 黒い枠を防ぐ
             '&:focus': {
-              outline: 'none', // フォーカス時も黒い枠を防ぐ
-              boxShadow: 'none', // フォーカス時の影を消す
+              outline: 'none',
+              boxShadow: 'none',
             },
             '&:hover': {
-              background: 'linear-gradient(45deg, #FE6B8B 40%, #FF8E53 100%)',
+              background: loading ? '#CCC' : 'linear-gradient(45deg, #FE6B8B 40%, #FF8E53 100%)',
               boxShadow: '0 4px 8px 2px rgba(255, 105, 135, .4)',
             },
           }}
         >
-          ログイン または サインアップ
+          {loading ? '読み込み中...' : 'ログイン または サインアップ'}
         </Button>
 
-
-        {/* クレジットを一貫したスタイルで表示 */}
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          align="center"
-          sx={{ mt: 4, display: 'inline' }} // 親要素はインライン表示
-        >
-          Made by KOSAMAX
-          <span
-            style={{
-              display: 'inline',
-              whiteSpace: 'nowrap',
-              position: 'relative',
-            }}
-          >
-            <span
-              style={{
-                display: 'inline-block',
-                margin: '0 0.5rem',
-              }}
-            >
-              {/* | を表示する擬似要素 */}
-              <span
-                style={{
-                  display: 'none', // デフォルトは非表示
-                }}
-                className="separator"
-              >
-                |
-              </span>
-            </span>
-            Powered by React and Material-UI
-          </span>
-        </Typography>
-
-        <Typography
-          variant="body2"
-          color="textSecondary"
-          align="center"
-          sx={{ mt: 1, display: 'inline' }} // 親要素はインライン表示
-        >
-          Background Image: UTAIRO BOX
-          <span
-            style={{
-              display: 'inline',
-              whiteSpace: 'nowrap',
-              position: 'relative',
-            }}
-          >
-            <span
-              style={{
-                display: 'inline-block',
-                margin: '0 0.5rem',
-              }}
-            >
-              {/* | を表示する擬似要素 */}
-              <span
-                style={{
-                  display: 'none', // デフォルトは非表示
-                }}
-                className="separator"
-              >
-                |
-              </span>
-            </span>
-            Icon Image: Adobe Firefly
-          </span>
-        </Typography>
+        {/* Additional content below */}
       </Box>
     </Box>
   );
