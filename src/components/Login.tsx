@@ -24,15 +24,15 @@ export default function Login() {
   const theme = useTheme();
   const [username, setUsername] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false); // Loading state
+  const [loading, setLoading] = useState<boolean>(false); // ローディング状態
   const navigate = useNavigate();
 
-  // Check if dark mode is preferred
+  // ダークモードの確認
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const handleLogin = () => {
     if (username) {
-      setLoading(true); // Start loading
+      setLoading(true); // ローディング開始
       fetch(`https://t8vrh2rit7.execute-api.ap-northeast-1.amazonaws.com/test/api/users/${username}`, {
         method: 'POST',
       })
@@ -53,7 +53,7 @@ export default function Login() {
           setError('ログインに失敗しました。ユーザー名を確認してください。');
         })
         .finally(() => {
-          setLoading(false); // Stop loading
+          setLoading(false); // ローディング終了
         });
     } else {
       setError('ユーザー名を入力してください。');
@@ -73,6 +73,7 @@ export default function Login() {
       alignItems="center"
       justifyContent="center"
       minHeight="100vh"
+      position="relative"
     >
       <Box
         display="flex"
@@ -134,7 +135,7 @@ export default function Login() {
           variant="contained"
           onClick={handleLogin}
           fullWidth
-          disabled={loading} // Disable button while loading
+          disabled={loading} // ローディング中はボタンを無効化
           sx={{
             background: loading ? '#CCC' : 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
             color: 'white',
@@ -154,7 +155,87 @@ export default function Login() {
           {loading ? '読み込み中...' : 'ログイン または サインアップ'}
         </Button>
 
-        {/* Additional content below */}
+        {/* クレジットを一貫したスタイルで表示 */}
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 2, display: 'inline' }}
+        >
+          <a href="https://github.com/docomo-KOSAMAX/FAVE" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+            Made by KOSAMAX
+          </a>
+          <span
+            style={{
+              display: 'inline',
+              whiteSpace: 'nowrap',
+              position: 'relative',
+            }}
+          >
+            <span
+              style={{
+                display: 'inline-block',
+                margin: '0 0.5rem',
+              }}
+            >
+              <span
+                style={{
+                  display: 'none',
+                }}
+                className="separator"
+              >
+                |
+              </span>
+            </span>
+            Powered by{' '}
+            <a href="https://ja.react.dev/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+              React
+            </a>{' '}
+            and{' '}
+            <a href="https://mui.com/material-ui/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Material-UI
+            </a>
+          </span>
+        </Typography>
+
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          align="center"
+          sx={{ mt: 1, display: 'inline' }}
+        >
+          Background Image:{' '}
+          <a href="https://sakuranouta.biz/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+            UTAIRO BOX
+          </a>
+          <span
+            style={{
+              display: 'inline',
+              whiteSpace: 'nowrap',
+              position: 'relative',
+            }}
+          >
+            <span
+              style={{
+                display: 'inline-block',
+                margin: '0 0.5rem',
+              }}
+            >
+              <span
+                style={{
+                  display: 'none',
+                }}
+                className="separator"
+              >
+                |
+              </span>
+            </span>
+            Icon Image:{' '}
+            <a href="https://www.adobe.com/jp/products/firefly.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
+              Adobe Firefly
+            </a>
+          </span>
+        </Typography>
       </Box>
     </Box>
   );
