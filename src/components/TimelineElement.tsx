@@ -79,7 +79,7 @@ const TimelineElement: React.FC<TimelineElementProps> = ({
         boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.1), 0px 4px 8px rgba(0, 0, 0, 0.06)',
         opacity: isInView ? 1 : 0,
         transform: isInView ? 'scale(1)' : 'scale(0.95)',
-        transition: 'opacity 0.3s ease-out, transform 0.3s ease-out',
+        transition: 'opacity 0.1s ease-out, transform 0.1s ease-out',
       }}
     >
       {/* タイトルと投稿日を同じ行に配置 */}
