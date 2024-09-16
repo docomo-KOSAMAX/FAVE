@@ -9,6 +9,9 @@
 - **豊富なレスポンス**：布教活動の成功を実感できるシステム。
 - **推しポイントの共有**：同じ趣味を持つファン同士がつながる場所を提供。
 
+## アーキテクチャ
+![AWS drawio_1](https://github.com/user-attachments/assets/c7e8e32b-4dce-4ed7-b760-6595ec787c36)
+
 ## 技術スタック
 
 ### フロントエンド
@@ -21,6 +24,10 @@
 - **AWS**: Lambda, API Gateway, bedrock, EventBridge, Aurora Serverless
 - **Python**: サーバーサイドロジックの実装。
 - **PostgreSQL**: データベース。
+
+### ER図
+![image (2)](https://github.com/user-attachments/assets/04890261-bcfc-4e20-9493-5742628c0d68)
+
 
 ## 制作
 チーム KOSAMAX
