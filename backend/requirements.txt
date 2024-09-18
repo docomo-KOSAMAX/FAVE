@@ -1,0 +1,4 @@
+# Python 3.12 on AWS Lambda
+boto3  # AWSリソース操作
+psycopg2  # Postgres SQLライブラリ
+pytz  # タイムゾーン情報提供

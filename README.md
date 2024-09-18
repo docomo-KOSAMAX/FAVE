@@ -2,7 +2,7 @@
 
 ## 概要
 
-[ドコモハッカソン](https://information.nttdocomo-fresh.jp/event/hackathon/)\(2024/9/10-2024/9/13\) 最優秀賞
+[ドコモハッカソン](https://information.nttdocomo-fresh.jp/event/hackathon/)\(2024/9/10-2024/9/13\) 最優秀賞受賞作品
 
 私たちのプラットフォームでは、以下の特徴を持つサービスを提供します：
 
