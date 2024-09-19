@@ -1,4 +1,5 @@
 # 布教特化型Vtuberプラットフォーム「FAVE」
+https://github.com/user-attachments/assets/aa1f095f-f84e-49ab-a0a6-d2b2f6ca9206
 
 ## 概要
 
