@@ -3,7 +3,7 @@ https://github.com/user-attachments/assets/aa1f095f-f84e-49ab-a0a6-d2b2f6ca9206
 
 ## 概要
 
-[ドコモハッカソン](https://information.nttdocomo-fresh.jp/event/hackathon/)\(2024/9/10-2024/9/13\) 最優秀賞受賞作品 ([発表スライド](https://www.slideshare.net/secret/zIdeJ6wkamFrFw))
+[ドコモハッカソン](https://information.nttdocomo-fresh.jp/event/hackathon/)\(2024/9/10-2024/9/13\) 最優秀賞受賞作品 ([発表スライド](https://www.docswell.com/s/asari_no_kaigara/KN17Q7-001556))
 
 私たちのプラットフォームでは、以下の特徴を持つサービスを提供します：
 
